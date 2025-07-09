@@ -33,12 +33,8 @@ const Apod: React.FC = () => {
     return null;
   }else{
     return (
-      <div className="max-w-3xl mx-auto px-4 py-6 text-center">
-        <img
-          src={data.image}
-          alt={data.title}
-          className="w-full h-auto rounded-lg shadow-md mb-6"
-        />
+      <div className="max-w-xl mx-auto px-4 py-6 text-center">
+        <div className="w-full h-64 rounded-lg shadow-md mb-6" style={{backgroundImage: "url('"+data.image+"')"}}></div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{data.title}</h2>
         <p className="text-base text-gray-700 leading-relaxed text-justify">
           {data.explanation}

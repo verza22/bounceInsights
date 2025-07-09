@@ -5,9 +5,12 @@ import { DashboardLayoutComponent, PanelsDirective, PanelDirective, ResizeArgs }
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
 
-import Apod from "./Apod";
-import Neo from "./Neo";
-import Cme from "./Cme";
+import Apod from "./widgets/Apod";
+import Neo from "./widgets/Neo";
+import Cme from "./widgets/Cme";
+import Gst from "./widgets/Gst";
+import InSight from "./widgets/InSight";
+import Curiosity from "./widgets/Curiosity";
 
 const Dashboard: React.FC = () => {
     const btnobj = useRef<ButtonComponent>(null);
@@ -110,6 +113,30 @@ const Dashboard: React.FC = () => {
         );
     };
 
+    const gstTemplate = () => {
+        return (
+            <div className="template">
+                <Gst/>
+            </div>
+        );
+    };
+
+    const inSightTemplate = () => {
+        return (
+            <div className="template">
+                <InSight/>
+            </div>
+        );
+    };
+
+    const curiosityTemplate = () => {
+        return (
+            <div className="template">
+                <Curiosity/>
+            </div>
+        );
+    };
+
     return (
         <div>
             <div id='edit_target' className="control-section">
@@ -171,6 +198,30 @@ const Dashboard: React.FC = () => {
                             col={0}
                             content={cmeTemplate}
                             header={'<div class="text-center">Coronal Mass Ejection</div>'}
+                        />
+                        <PanelDirective
+                            sizeX={1}
+                            sizeY={1}
+                            row={1}
+                            col={1}
+                            content={gstTemplate}
+                            header={'<div class="text-center">GST</div>'}
+                        />
+                        <PanelDirective
+                            sizeX={1}
+                            sizeY={1}
+                            row={2}
+                            col={0}
+                            content={inSightTemplate}
+                            header={'<div class="text-center">InSight</div>'}
+                        />
+                        <PanelDirective
+                            sizeX={1}
+                            sizeY={1}
+                            row={2}
+                            col={1}
+                            content={curiosityTemplate}
+                            header={'<div class="text-center">Curiosity</div>'}
                         />
                     </PanelsDirective>
                 </DashboardLayoutComponent>

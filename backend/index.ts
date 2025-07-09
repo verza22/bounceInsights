@@ -1,6 +1,10 @@
 import express, { Request, Response } from 'express';
-import axios from "axios";
 import cors from "cors";
+import { groupByRegion } from "./utils/groupByRegion";
+import { readJSONFile } from "./utils/readJSONFile";
+import { fetchWithFallback } from "./utils/fetchWithFallback";
+
+import { NASA_API_TOKEN } from './config';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,70 +17,114 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Backend funcionando con TypeScript');
 });
 
+// APOD
 app.get("/nasa/apod", async (req: Request, res: Response) => {
-  const api_key = "DEMO_KEY";
-  const url = `https://api.nasa.gov/planetary/apod?api_key=${api_key}`;
+  const url = `https://api.nasa.gov/planetary/apod?api_key=${NASA_API_TOKEN}`;
+  const fallback = "./responses/apod.json";
 
   try {
-    const response = await axios.get(url);
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error fetching APOD from NASA API:", error);
-    res.status(500).json({ error: "Error fetching APOD from NASA API" });
+    const data = await fetchWithFallback(url, fallback);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Error al obtener los datos de APOD" });
   }
 });
 
+// NEO
 app.get("/nasa/neo", async (req: Request, res: Response) => {
   const start_date = "2025-07-01";
   const end_date = "2025-07-07";
-  const api_key = "DEMO_KEY";
-
-  const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${start_date}&end_date=${end_date}&api_key=${api_key}`;
+  const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${start_date}&end_date=${end_date}&api_key=${NASA_API_TOKEN}`;
+  const fallback = "./responses/neo.json";
 
   try {
-    const response = await axios.get(url);
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error fetching data from NASA API:", error);
-    res.status(500).json({ error: "Error fetching data from NASA API" });
+    const data = await fetchWithFallback(url, fallback);
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: "Error al obtener los datos de NEO" });
   }
 });
 
+// CME
 app.get("/nasa/cme", async (req: Request, res: Response) => {
   const startDate = "2025-06-01";
   const endDate = "2025-07-01";
-  const api_key = "DEMO_KEY";
-
-  const url = `https://api.nasa.gov/DONKI/CME?startDate=${startDate}&endDate=${endDate}&api_key=${api_key}`;
+  const url = `https://api.nasa.gov/DONKI/CME?startDate=${startDate}&endDate=${endDate}&api_key=${NASA_API_TOKEN}`;
+  const fallback = "./responses/cme.json";
 
   try {
-    const response = await axios.get(url);
-    const data = response.data;
-
-    // Función para simplificar las regiones
-    const getRegion = (location: string | null): string => {
-      if (!location) return "Unknown";
-      if (location.startsWith("N")) return "North";
-      if (location.startsWith("S")) return "South";
-      return "Unknown";
-    };
-
-    const grouped: Record<string, number> = {};
-
-    data.forEach((item: any) => {
-      const region = getRegion(item.sourceLocation || null);
-      grouped[region] = (grouped[region] || 0) + 1;
-    });
-
-    const formattedData = Object.entries(grouped)
-      .map(([name, y]) => ({ name, y }));
-
-    res.json(formattedData);
-  } catch (error) {
-    console.error("Error fetching CME data from NASA API:", error);
-    res.status(500).json({ error: "Error fetching CME data from NASA API" });
+    const rawData = await fetchWithFallback(url, fallback);
+    const groupedData = groupByRegion(rawData);
+    res.json(groupedData);
+  } catch (err) {
+    res.status(500).json({ error: "Error al procesar los datos de CME" });
   }
 });
+
+// GST
+app.get("/nasa/gst", async (req: Request, res: Response) => {
+  const startDate = "2025-06-01";
+  const endDate = "2025-07-01";
+  const url = `https://api.nasa.gov/DONKI/GST?startDate=${startDate}&endDate=${endDate}&api_key=${NASA_API_TOKEN}`;
+  const fallback = "./responses/gst.json";
+
+  try {
+    const rawData = await fetchWithFallback(url, fallback);
+
+    const kpEntries: { date: string; kp: number }[] = rawData.flatMap((gst: any) => {
+      const kpArray = gst.allKpIndex || [];
+      return kpArray.map((kp: any) => ({
+        date: kp.observedTime?.split("T")[0] || "unknown",
+        kp: kp.kpIndex
+      }));
+    });
+
+    res.json(kpEntries);
+  } catch (err) {
+    console.error("Error al procesar datos de GST:", err);
+    res.status(500).json({ error: "Error al procesar datos de GST" });
+  }
+});
+
+// Insight Weather
+app.get("/nasa/insight", async (req: Request, res: Response) => {
+  const url = `https://api.nasa.gov/insight_weather/?api_key=${NASA_API_TOKEN}&feedtype=json&ver=1.0`;
+  const fallback = "./responses/inSight.json";
+
+  try {
+    const rawData = await fetchWithFallback(url, fallback);
+
+    const sols = rawData?.sol_keys || [];
+    const result = sols.map((sol: string) => {
+      const solData = rawData[sol];
+      return {
+        sol,
+        minTemp: solData?.AT?.mn ?? null,
+        maxTemp: solData?.AT?.mx ?? null
+      };
+    }).filter((entry:any) => entry.minTemp !== null && entry.maxTemp !== null);
+
+    res.json(result);
+  } catch (err) {
+    console.error("Error al procesar datos de InSight:", err);
+    res.status(500).json({ error: "Error al procesar datos de InSight" });
+  }
+});
+
+// Curiosity
+app.get("/nasa/curiosity", async (req: Request, res: Response) => {
+  const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1&api_key=${NASA_API_TOKEN}`;
+  const fallback = "./responses/curiosity.json";
+
+  try {
+    const data = await fetchWithFallback(url, fallback);
+    res.json(data); // Devuelve todas las fotos del sol 1
+  } catch (err) {
+    console.error("Error al obtener datos del rover Curiosity:", err);
+    res.status(500).json({ error: "Error al obtener datos del rover Curiosity" });
+  }
+});
+
 
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);

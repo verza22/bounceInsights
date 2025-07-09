@@ -1,0 +1,1 @@
+export const NASA_API_TOKEN = "wLjZFSIWiklBQZySE061gnmNH3yR4QKEKnp2fLOb";
