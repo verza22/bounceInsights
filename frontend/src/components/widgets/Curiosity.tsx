@@ -1,5 +1,6 @@
 import React from "react";
-import axios from "axios";
+import axios from "./../../utils/axios";
+import { useDateStore } from "../store/useDateStore";
 
 interface MarsPhoto {
   id: number;
@@ -13,20 +14,27 @@ interface MarsPhoto {
 const Curiosity: React.FC = () => {
   const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
   const [index, setIndex] = React.useState(0);
+  const { dateFrom } = useDateStore();
 
   React.useEffect(() => {
-    axios.get("http://localhost:3001/nasa/curiosity")
-      .then(res => {
-        if (res.data && Array.isArray(res.data.photos)) {
-          setPhotos(res.data.photos);
-        } else {
-          console.error("Datos inesperados:", res.data);
-        }
-      })
-      .catch(err => {
-        console.error("Error al obtener fotos del Curiosity:", err);
-      });
-  }, []);
+
+    axios.get("nasa/curiosity",{
+      params: {
+        dateFrom
+      }
+    })
+    .then(res => {
+      if (res.data && Array.isArray(res.data.photos)) {
+        setPhotos(res.data.photos);
+      } else {
+        console.error("Datos inesperados:", res.data);
+      }
+    })
+    .catch(err => {
+      console.error("Error al obtener fotos del Curiosity:", err);
+    });
+
+  }, [dateFrom]);
 
   const nextPhoto = () => {
     setIndex((prev) => (prev + 1 < photos.length ? prev + 1 : 0));

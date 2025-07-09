@@ -1,11 +1,11 @@
 import React from "react";
-import axios from "axios";
+import axios from "./../../utils/axios";
 const Highcharts = require("highcharts");
 
 const Insight: React.FC = () => {
   React.useEffect(() => {
     axios
-      .get("http://localhost:3001/nasa/insight")
+      .get("nasa/insight")
       .then((res) => {
         if (Array.isArray(res.data)) {
           loadChart(res.data);

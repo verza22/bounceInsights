@@ -5,6 +5,7 @@ import { DashboardLayoutComponent, PanelsDirective, PanelDirective, ResizeArgs }
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
 
+import DateRangeSelector from "./DateRangeSelector";
 import Apod from "./widgets/Apod";
 import Neo from "./widgets/Neo";
 import Cme from "./widgets/Cme";
@@ -141,7 +142,8 @@ const Dashboard: React.FC = () => {
         <div>
             <div id='edit_target' className="control-section">
                 <div>
-                    <div style={{ width: "100%", marginBottom: "10px", marginTop: "10px", height: "30px" }}>
+                    <div className="flex">
+                        <DateRangeSelector/>
                         <ButtonComponent
                             id="togglebtn"
                             cssClass='e-outline e-flat e-primary'
@@ -149,7 +151,6 @@ const Dashboard: React.FC = () => {
                             iconCss={icon}
                             isToggle={true}
                             onClick={btnClick}
-                            style={{ float: "right", width: "75px" }}
                         >
                             {btnContent}
                         </ButtonComponent>

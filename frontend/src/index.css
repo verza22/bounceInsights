@@ -1,3 +1,10 @@
 .e-panel-content{
     overflow-y: scroll;
 }
+
+.apodImg{
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: black;
+}

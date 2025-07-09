@@ -1,18 +1,26 @@
 import React from "react";
-import axios from "axios";
+import axios from "./../../utils/axios";
+import { useDateStore } from "../store/useDateStore";
 const Highcharts = require('highcharts');
 
 const Cme: React.FC = () => {
+
+  const { dateFrom, dateTo } = useDateStore();
+
   React.useEffect(() => {
-    axios.get("http://localhost:3001/nasa/gst")
-      .then(res => {
-        // debugger
-        loadChart(res.data);
-      })
-      .catch(err => {
-        console.error("Error al obtener datos de la NASA:", err);
-      });
-  }, []);
+    axios.get("nasa/gst",{
+        params: {
+            dateFrom, 
+            dateTo
+        }
+    })
+    .then(res => {
+      loadChart(res.data);
+    })
+    .catch(err => {
+      console.error("Error al obtener datos de la NASA:", err);
+    });
+  }, [dateFrom, dateTo]);
 
   const loadChart = (data : any) => {
     const categories = data.map((d: any) => d.date);

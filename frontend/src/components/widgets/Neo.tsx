@@ -1,12 +1,20 @@
 import React from "react";
-import axios from "axios";
+import axios from "./../../utils/axios";
+import { useDateStore } from "../store/useDateStore";
 const Highcharts = require('highcharts');
 
 const Neo: React.FC = () => {
 
+    const { dateFrom, dateTo } = useDateStore();
+
     React.useEffect(()=>{
 
-        axios.get("http://localhost:3001/nasa/neo")
+        axios.get("nasa/neo",{
+            params: {
+                dateFrom, 
+                dateTo
+            }
+        })
         .then(res => {
             if(res.data.near_earth_objects){
                 const nearEarthObjects = res.data.near_earth_objects;
@@ -17,7 +25,7 @@ const Neo: React.FC = () => {
             console.error("Error al obtener datos de la NASA:", err);
         });
 
-    }, []);
+    }, [dateFrom, dateTo]);
 
     const loadChart = (nearEarthObjects: Record<string, any[]>) => {
         const dates = Object.keys(nearEarthObjects).sort();
