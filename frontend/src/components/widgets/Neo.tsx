@@ -1,14 +1,20 @@
 import React from "react";
 import axios from "./../../utils/axios";
-import { useDateStore } from "../store/useDateStore";
+import { useDateStore } from "../../store/useDateStore";
 const Highcharts = require('highcharts');
 
-const Neo: React.FC = () => {
+interface NeoProps {
+    id: number,
+    setLoading: (val: boolean) => void
+}
+
+const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
 
     const { dateFrom, dateTo } = useDateStore();
 
     React.useEffect(()=>{
 
+        setLoading(true);
         axios.get("nasa/neo",{
             params: {
                 dateFrom, 
@@ -23,6 +29,9 @@ const Neo: React.FC = () => {
         })
         .catch(err => {
             console.error("Error al obtener datos de la NASA:", err);
+        })
+        .finally(() => {
+            setLoading(false);
         });
 
     }, [dateFrom, dateTo]);
@@ -34,13 +43,16 @@ const Neo: React.FC = () => {
             count: nearEarthObjects[date].length
         }));
 
-        Highcharts.chart('container', {
+        Highcharts.chart('container-neo-'+id, {
             chart: {
                 type: 'line'
             },
             title: {
                 text: 'Número de asteroides cercanos a la Tierra por día',
                 align: 'left'
+            },
+            credits: {
+                enabled: false
             },
             xAxis: {
                 categories: data.map(item => item.date),
@@ -75,7 +87,7 @@ const Neo: React.FC = () => {
         });
     };
 
-    return <div id="container">
+    return <div id={"container-neo-"+id}>
     </div>
 }
 

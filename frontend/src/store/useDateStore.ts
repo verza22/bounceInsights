@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { formatDate } from '../../utils/utils';
+import { formatDate } from '../utils/utils';
 
 const today = new Date();
 const sevenDaysAgo = new Date();

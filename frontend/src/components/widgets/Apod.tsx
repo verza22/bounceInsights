@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../utils/axios";
-import { useDateStore } from "../store/useDateStore";
+import { useDateStore } from "../../store/useDateStore";
 
 interface ApodState {
   title: string;
@@ -8,13 +8,18 @@ interface ApodState {
   explanation: string;
 }
 
-const Apod: React.FC = () => {
+interface ApodProps {
+  setLoading: (val: boolean) => void
+}
+
+const Apod: React.FC<ApodProps> = ({setLoading}) => {
 
   const [data, setData] = React.useState<ApodState | null>(null);
   const { dateFrom } = useDateStore();
 
   React.useEffect(()=>{
-
+    
+    setLoading(true);
     axios.get("nasa/apod",{
       params: {
         dateFrom
@@ -31,6 +36,9 @@ const Apod: React.FC = () => {
     })
     .catch(err => {
       console.error("Error al obtener datos de la NASA:", err);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 
   }, [dateFrom]);
@@ -40,7 +48,7 @@ const Apod: React.FC = () => {
   }else{
     return (
       <div className="max-w-xl mx-auto px-4 py-6 text-center">
-        <div className="w-full h-64 rounded-lg shadow-md mb-6 apodImg" style={{backgroundImage: "url('"+data.image+"')"}}></div>
+        <div className="w-full h-64 rounded-lg shadow-md mb-6 apod-img" style={{backgroundImage: "url('"+data.image+"')"}}></div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{data.title}</h2>
         <p className="text-base text-gray-700 leading-relaxed text-justify">
           {data.explanation}

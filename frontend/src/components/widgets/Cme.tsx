@@ -1,15 +1,21 @@
 import React from "react";
 import axios from "./../../utils/axios";
-import { useDateStore } from "../store/useDateStore";
+import { useDateStore } from "../../store/useDateStore";
 
 const Highcharts = require('highcharts');
 
-const Cme: React.FC = () => {
+interface CmeProps {
+  id: number,
+  setLoading: (val: boolean) => void
+}
+
+const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
 
   const { dateFrom, dateTo } = useDateStore();
 
   React.useEffect(() => {
 
+    setLoading(true);
     axios.get("nasa/cme",{
       params: {
         dateFrom, 
@@ -25,12 +31,15 @@ const Cme: React.FC = () => {
     })
     .catch(err => {
       console.error("Error al obtener datos de la NASA:", err);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 
   }, [dateFrom, dateTo]);
 
   const loadChart = (pieData: { name: string; y: number }[]) => {
-    Highcharts.chart('container-cme', {
+    Highcharts.chart('container-cme-'+id, {
       chart: {
         type: 'pie'
       },
@@ -40,6 +49,9 @@ const Cme: React.FC = () => {
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y} eventos)'
+      },
+      credits: {
+        enabled: false
       },
       accessibility: {
         point: {
@@ -64,7 +76,7 @@ const Cme: React.FC = () => {
     });
   };
 
-  return <div id="container-cme" style={{ width: '100%', maxWidth: 600, height: 400, margin: '0 auto' }}></div>;
+  return <div id={"container-cme-"+id} style={{ width: '100%', maxWidth: 600, height: 400, margin: '0 auto' }}></div>;
 };
 
 export default Cme;

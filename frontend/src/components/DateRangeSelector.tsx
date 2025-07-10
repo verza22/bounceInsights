@@ -1,6 +1,6 @@
 import React from 'react';
 import { DateRangePickerComponent, RangeEventArgs } from '@syncfusion/ej2-react-calendars';
-import { useDateStore } from './store/useDateStore';
+import { useDateStore } from '../store/useDateStore';
 import { formatDate, strFormatDate } from '../utils/utils';
 
 const DateRangeSelector: React.FC = () => {

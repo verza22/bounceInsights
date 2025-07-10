@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import * as React from "react";
 import { registerLicense } from '@syncfusion/ej2-base';
-import Dashboard from './components/Dashboard';
+import MainDashboard from './components/MainDashboard';
 
 registerLicense('Ngo9BigBOggjHTQxAR8/V1JEaF5cXmtCdkxxWmFZfVtgdVdMYltbR3RPMyBoS35Rc0VkWXdecHZdR2JVU0N/VEFd');
 
@@ -13,4 +13,4 @@ const existingRoot = (container as any)._root;
 const root = existingRoot ?? createRoot(container);
 (container as any)._root = root;
 
-root.render(<Dashboard />);
+root.render(<MainDashboard />);

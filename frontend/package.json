@@ -10,6 +10,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "@syncfusion/ej2-base": "30.1.38",
     "@syncfusion/ej2-buttons": "30.1.37",
     "@syncfusion/ej2-charts": "30.1.39",

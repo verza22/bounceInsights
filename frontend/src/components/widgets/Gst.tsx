@@ -1,13 +1,20 @@
 import React from "react";
 import axios from "./../../utils/axios";
-import { useDateStore } from "../store/useDateStore";
+import { useDateStore } from "../../store/useDateStore";
 const Highcharts = require('highcharts');
 
-const Cme: React.FC = () => {
+interface GstProps {
+  id: number,
+  setLoading: (val: boolean) => void
+}
+
+const Cme: React.FC<GstProps> = ({id, setLoading}) => {
 
   const { dateFrom, dateTo } = useDateStore();
 
   React.useEffect(() => {
+
+    setLoading(true);
     axios.get("nasa/gst",{
         params: {
             dateFrom, 
@@ -19,19 +26,26 @@ const Cme: React.FC = () => {
     })
     .catch(err => {
       console.error("Error al obtener datos de la NASA:", err);
+    })
+    .finally(() => {
+      setLoading(false);
     });
+
   }, [dateFrom, dateTo]);
 
   const loadChart = (data : any) => {
     const categories = data.map((d: any) => d.date);
     const values = data.map((d: any) => d.kp);
 
-    Highcharts.chart('container-gst', {
+    Highcharts.chart("container-gst-"+id, {
         chart: {
           type: 'column'
         },
         title: {
           text: 'Índice Kp diario (Tormentas Geomagnéticas)'
+        },
+        credits: {
+          enabled: false
         },
         xAxis: {
           categories: categories,
@@ -52,7 +66,7 @@ const Cme: React.FC = () => {
       });
   };
 
-  return <div id="container-gst" style={{ width: '100%', maxWidth: 600, height: 400, margin: '0 auto' }}></div>;
+  return <div id={"container-gst-"+id} style={{ width: '100%', maxWidth: 600, height: 400, margin: '0 auto' }}></div>;
 };
 
 export default Cme;

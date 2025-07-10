@@ -2,20 +2,30 @@ import React from "react";
 import axios from "./../../utils/axios";
 const Highcharts = require("highcharts");
 
-const Insight: React.FC = () => {
+interface InsightProps {
+  id: number,
+  setLoading: (val: boolean) => void
+}
+
+const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
   React.useEffect(() => {
-    axios
-      .get("nasa/insight")
-      .then((res) => {
-        if (Array.isArray(res.data)) {
-          loadChart(res.data);
-        } else {
-          console.error("Datos inesperados del backend:", res.data);
-        }
-      })
-      .catch((err) => {
-        console.error("Error al obtener datos de InSight:", err);
-      });
+
+    setLoading(true);
+    axios.get("nasa/insight")
+    .then((res) => {
+      if (Array.isArray(res.data)) {
+        loadChart(res.data);
+      } else {
+        console.error("Datos inesperados del backend:", res.data);
+      }
+    })
+    .catch((err) => {
+      console.error("Error al obtener datos de InSight:", err);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+
   }, []);
 
   const loadChart = (
@@ -25,13 +35,16 @@ const Insight: React.FC = () => {
     const minTemps = data.map((entry) => entry.minTemp);
     const maxTemps = data.map((entry) => entry.maxTemp);
 
-    Highcharts.chart("container-insight", {
+    Highcharts.chart("container-insight-"+id, {
       chart: {
         type: "area"
       },
       title: {
         text: "Temperaturas mínimas y máximas en Marte (por sol)",
         align: "left"
+      },
+      credits: {
+        enabled: false
       },
       xAxis: {
         categories,
@@ -72,7 +85,7 @@ const Insight: React.FC = () => {
 
   return (
     <div
-      id="container-insight"
+      id={"container-insight-"+id}
       style={{ width: "100%", maxWidth: 700, height: 400, margin: "0 auto" }}
     ></div>
   );

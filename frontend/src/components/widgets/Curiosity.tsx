@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "./../../utils/axios";
-import { useDateStore } from "../store/useDateStore";
+import { useDateStore } from "../../store/useDateStore";
 
 interface MarsPhoto {
   id: number;
@@ -11,13 +11,18 @@ interface MarsPhoto {
   };
 }
 
-const Curiosity: React.FC = () => {
+interface CuriosityProps {
+  setLoading: (val: boolean) => void
+}
+
+const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
   const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
   const [index, setIndex] = React.useState(0);
   const { dateFrom } = useDateStore();
 
   React.useEffect(() => {
 
+    setLoading(true);
     axios.get("nasa/curiosity",{
       params: {
         dateFrom
@@ -32,6 +37,9 @@ const Curiosity: React.FC = () => {
     })
     .catch(err => {
       console.error("Error al obtener fotos del Curiosity:", err);
+    })
+    .finally(() => {
+      setLoading(false);
     });
 
   }, [dateFrom]);
