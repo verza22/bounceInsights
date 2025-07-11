@@ -43,3 +43,16 @@ export const readJSONFile = async (path: string) => {
     throw new Error("Archivo JSON inválido");
   }
 };
+
+export const validateLanguage = (lang: string) => {
+  switch(lang){
+    default:
+      return "";
+    case "es":
+      return "ESP";
+    case "en":
+      return "ENG";
+    case "de":
+      return "DEU"
+  }
+}

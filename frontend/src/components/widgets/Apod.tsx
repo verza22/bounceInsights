@@ -1,4 +1,5 @@
 import React from "react";
+import i18n from "i18next";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useAppStore } from "../../store/useAppStore";
@@ -39,10 +40,13 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
     setLoading(true);
     setTitle('Loading...');
     setExplanation('Loading...');
+
+    const currentLang = i18n.language;
     axios.get("nasa/apod",{
       params: {
         dateFrom,
-        clientId
+        clientId,
+        currentLang
       }
     })
     .then(res => {

@@ -27,6 +27,7 @@
     "asteroidsTitle": "Number of Near-Earth Asteroids per Day",
     "asteroidsCount": "Number of Asteroids",
     "asteroidsLabel": "Asteroids",
-    "english": "English",
-    "spanish": "Spanish"
+    "en": "English",
+    "es": "Spanish",
+    "de": "German"
 }
