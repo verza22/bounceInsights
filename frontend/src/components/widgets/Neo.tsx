@@ -6,10 +6,11 @@ const Highcharts = require('highcharts');
 
 interface NeoProps {
     id: number,
-    setLoading: (val: boolean) => void
+    setLoading: (val: boolean) => void,
+    changeDateFrom: (dateFrom: string) => void
 }
 
-const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
+const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom}) => {
 
     const { dateFrom, dateTo } = useDateStore();
     const { t } = useTranslation();
@@ -88,6 +89,17 @@ const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
                         }
                     }
                 }]
+            },
+            plotOptions: {
+                series: {
+                  point: {
+                    events: {
+                      click: function (this: any) {
+                        changeDateFrom(this.category);
+                      }
+                    }
+                  }
+                }
             }
         });
     };

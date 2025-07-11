@@ -1,5 +1,5 @@
 import React from "react";
-import { useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 
 import { DashboardLayoutComponent } from "@syncfusion/ej2-react-layouts";
 
@@ -7,12 +7,12 @@ import { useWidgetStore } from "../store/useWidgetStore";
 import { useAppStore } from "../store/useAppStore";
 
 import Header from "./widgets/Header";
-import Apod from "./widgets/Apod";
+import Apod, { ApodRef } from "./widgets/Apod";
 import Neo from "./widgets/Neo";
 import Cme from "./widgets/Cme";
 import Gst from "./widgets/Gst";
 import InSight from "./widgets/InSight";
-import Curiosity from "./widgets/Curiosity";
+import Curiosity, { CuriosityRef } from "./widgets/Curiosity";
 import Widget, { WidgetRef } from "./widgets/Widget";
 import ErrorBoundary from "./ErrorBoundary";
 
@@ -26,6 +26,8 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     const { editMode } = useAppStore(); 
 
     const widgetRefMap = useRef<Record<number, React.RefObject<WidgetRef | null>>>({});
+    const apodRefMap = useRef<Record<number, React.RefObject<ApodRef | null>>>({});
+    const curiosityRefMap = useRef<Record<number, React.RefObject<CuriosityRef | null>>>({});
     const dashboardObj = useRef<DashboardLayoutComponent>(null);
 
     const cellSpacing: [number, number] = [10, 10];
@@ -41,7 +43,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         addWidgetToLayout
     }));
 
-    const addWidgetToLayout = useCallback((widget: Widget) => {
+    const addWidgetToLayout = React.useCallback((widget: Widget) => {
         const panel = {
             id: '_layout' + widget.id,
             sizeX: widget.sizeX,
@@ -65,34 +67,40 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         switch (type) {
             default:
             case "apod":
-            content = ({ setLoading }) => (
-                <Apod setLoading={setLoading} />
-            );
+                if (!apodRefMap.current[id]) {
+                    apodRefMap.current[id] = React.createRef<ApodRef>();
+                }
+                content = ({ setLoading }) => (
+                    <Apod setLoading={setLoading} ref={apodRefMap.current[id]} />
+                );
             break;
             case "neo":
-            content = ({ setLoading }) => (
-                <Neo id={id} setLoading={setLoading} />
-            );
+                content = ({ setLoading }) => (
+                    <Neo id={id} setLoading={setLoading} changeDateFrom={changeDateFrom} />
+                );
             break;
             case "cme":
-            content = ({ setLoading }) => (
-                <Cme id={id} setLoading={setLoading} />
-            );
+                content = ({ setLoading }) => (
+                    <Cme id={id} setLoading={setLoading} />
+                );
             break;
             case "gst":
-            content = ({ setLoading }) => (
-                <Gst id={id} setLoading={setLoading} />
-            );
+                content = ({ setLoading }) => (
+                    <Gst id={id} setLoading={setLoading} changeDateFrom={changeDateFrom} />
+                );
             break;
             case "insight":
-            content = ({ setLoading }) => (
-                <InSight id={id} setLoading={setLoading} />
-            );
+                content = ({ setLoading }) => (
+                    <InSight id={id} setLoading={setLoading} />
+                );
             break;
             case "curiosity":
-            content = ({ setLoading }) => (
-                <Curiosity setLoading={setLoading} />
-            );
+                if (!curiosityRefMap.current[id]) {
+                    curiosityRefMap.current[id] = React.createRef<CuriosityRef>();
+                }
+                content = ({ setLoading }) => (
+                    <Curiosity setLoading={setLoading} ref={curiosityRefMap.current[id]} />
+                );
             break;
         }
     
@@ -103,7 +111,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         >{content}</Widget>;
     };
 
-    const deleteWidget = useCallback((id: number) => {
+    const deleteWidget = React.useCallback((id: number) => {
         removeWidget(id);//remove from store
         widgetRefMap.current[id]?.current?.unmountWidget();//unmount widget
         dashboardObj.current?.removePanel('_layout' + id);//remove from layout
@@ -112,6 +120,19 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     const refreshWidget = (id: number) => {
         widgetRefMap.current[id]?.current?.refresh();
     };
+
+    const changeDateFrom = React.useCallback((dateFrom: string) => {
+        for (const ref of Object.values(apodRefMap.current)) {
+            if (ref?.current) {
+                ref.current?.getApodData(dateFrom);
+            }
+        }
+        for (const ref of Object.values(curiosityRefMap.current)) {
+            if (ref?.current) {
+                ref.current?.getCuriosityData(dateFrom);
+            }
+        }
+    }, []);
 
     // const onPanelResize = (args: ResizeArgs) => {
     //     const chartEl = args.element?.querySelector('.e-panel-container .e-panel-content div div') as any;

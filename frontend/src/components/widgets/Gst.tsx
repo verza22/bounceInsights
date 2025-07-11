@@ -6,10 +6,11 @@ const Highcharts = require('highcharts');
 
 interface GstProps {
   id: number,
-  setLoading: (val: boolean) => void
+  setLoading: (val: boolean) => void,
+  changeDateFrom: (dateFrom: string) => void
 }
 
-const Cme: React.FC<GstProps> = ({id, setLoading}) => {
+const Cme: React.FC<GstProps> = ({id, setLoading, changeDateFrom}) => {
 
   const { dateFrom, dateTo } = useDateStore();
   const { t } = useTranslation();
@@ -67,7 +68,18 @@ const Cme: React.FC<GstProps> = ({id, setLoading}) => {
         series: [{
           name: t('kpIndex'),
           data: values
-        }]
+        }],
+        plotOptions: {
+          series: {
+            point: {
+              events: {
+                click: function (this: any) {
+                  changeDateFrom(this.category);
+                }
+              }
+            }
+          }
+      }
       });
   };
 

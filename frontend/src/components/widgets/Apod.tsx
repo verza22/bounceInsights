@@ -9,10 +9,15 @@ interface ApodProps {
   setLoading: (val: boolean) => void
 }
 
-const Apod: React.FC<ApodProps> = ({setLoading}) => {
+export interface ApodRef {
+  getApodData: (dateFrom: string) => void
+}
+
+const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading}, ref) => {
 
   const [image, setImage] = React.useState('');
   const [title, setTitle] = React.useState('');
+  const [date, setDate] = React.useState('');
   const [explanation, setExplanation] = React.useState('');
   const { dateFrom } = useDateStore();
   const { clientId } = useAppStore();
@@ -36,7 +41,10 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
   }, []);
 
   React.useEffect(()=>{
-    
+    getApodData(dateFrom);
+  }, [dateFrom]);
+
+  const getApodData = React.useCallback((dateFrom: string)=>{
     setLoading(true);
     setTitle('Loading...');
     setExplanation('Loading...');
@@ -52,6 +60,7 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
     .then(res => {
       if(res.data){
         setImage(res.data.hdurl);
+        setDate(dateFrom);
       }
     })
     .catch(err => {
@@ -60,14 +69,18 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
     .finally(() => {
       setLoading(false);
     });
+  }, []);
 
-  }, [dateFrom]);
+  React.useImperativeHandle(ref, () => ({
+    getApodData
+  }));
 
   if(image === null){
     return null;
   }else{
     return (
       <div className="max-w-xl mx-auto px-4 py-6 text-center">
+        <div className="text-center mb-2">{date}</div>
         <div className="w-full h-64 rounded-lg shadow-md mb-6 apod-img" style={{backgroundImage: "url('"+image+"')"}}></div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{title}</h2>
         <p className="text-base text-gray-700 leading-relaxed text-justify">
@@ -77,6 +90,6 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
     );
   }
 
-};
+});
 
 export default Apod;

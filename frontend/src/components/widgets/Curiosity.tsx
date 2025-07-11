@@ -16,14 +16,22 @@ interface CuriosityProps {
   setLoading: (val: boolean) => void
 }
 
-const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
+export interface CuriosityRef {
+  getCuriosityData: (dateFrom: string) => void
+}
+
+const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading}, ref) => {
+
   const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
   const [index, setIndex] = React.useState(0);
   const { dateFrom } = useDateStore();
   const { t } = useTranslation();
 
   React.useEffect(() => {
+    getCuriosityData(dateFrom);
+  }, [dateFrom]);
 
+  const getCuriosityData = React.useCallback((dateFrom: string)=>{
     setLoading(true);
     axios.get("nasa/curiosity",{
       params: {
@@ -43,8 +51,11 @@ const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
     .finally(() => {
       setLoading(false);
     });
+  }, []);
 
-  }, [dateFrom]);
+  React.useImperativeHandle(ref, ()=> ({
+    getCuriosityData
+  }));
 
   const nextPhoto = () => {
     setIndex((prev) => (prev + 1 < photos.length ? prev + 1 : 0));
@@ -86,6 +97,6 @@ const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
       </p>
     </div>
   );
-};
+});
 
 export default Curiosity;
