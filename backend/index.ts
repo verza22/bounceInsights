@@ -1,20 +1,28 @@
 import express, { Request, Response } from 'express';
 import cors from "cors";
+import http from 'http';
 import routes from './routes';
+import { setupWebSocket } from './sockets/websocket';
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 3001;
 
+// Middlewares
 app.use(express.json());
 app.use(cors());
 
+// Routes
 app.use('/', routes); 
+
+// WebSocket
+setupWebSocket(server);
 
 // Test route
 app.get('/', (req: Request, res: Response) => {
   res.send('Backend funcionando con TypeScript');
 });
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });

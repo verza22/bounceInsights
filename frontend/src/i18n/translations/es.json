@@ -26,5 +26,7 @@
     "marsMin": "Temperatura mínima",
     "asteroidsTitle": "Número de asteroides cercanos a la Tierra por día",
     "asteroidsCount": "Cantidad de asteroides",
-    "asteroidsLabel": "Asteroides"
+    "asteroidsLabel": "Asteroides",
+    "english": "Inglés",
+    "spanish": "Español"
   }

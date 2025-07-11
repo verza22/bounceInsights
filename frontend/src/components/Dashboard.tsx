@@ -48,7 +48,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
             sizeY: widget.sizeY,
             row: widget.row,
             col: widget.col,
-            header: () => <Header id={widget.id} onClick={refreshWidget} title={widget.title}/>,
+            header: () => <Header id={widget.id} onClick={refreshWidget} type={widget.type}/>,
             content: () => widgetTemplate(widget.id, widget.type)
         };
         dashboardObj.current?.addPanel(panel);

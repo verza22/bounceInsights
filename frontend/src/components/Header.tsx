@@ -9,6 +9,7 @@ import { useAppStore } from "../store/useAppStore";
 import { useWidgetStore } from "../store/useWidgetStore";
 
 import DateRangeSelector from "./DateRangeSelector";
+import LanguageSwitcher from "./LanguageSwitcher";
 import ErrorBoundary from "./ErrorBoundary";
 
 interface HeaderProps {
@@ -95,6 +96,7 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
         <div>
             <div className="flex">
                 <DateRangeSelector/>
+                <LanguageSwitcher/>
                 <ButtonComponent
                     id="togglebtn"
                     cssClass='e-outline e-flat e-primary'
