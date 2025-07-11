@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
+import { useTranslation } from "react-i18next";
 
 interface MarsPhoto {
   id: number;
@@ -19,6 +20,7 @@ const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
   const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
   const [index, setIndex] = React.useState(0);
   const { dateFrom } = useDateStore();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
 
@@ -32,11 +34,11 @@ const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
       if (res.data && Array.isArray(res.data.photos)) {
         setPhotos(res.data.photos);
       } else {
-        console.error("Datos inesperados:", res.data);
+        // TO DO show error with toast
       }
     })
     .catch(err => {
-      console.error("Error al obtener fotos del Curiosity:", err);
+      // TO DO show error with toast
     })
     .finally(() => {
       setLoading(false);
@@ -78,9 +80,9 @@ const Curiosity: React.FC<CuriosityProps> = ({setLoading}) => {
         </button>
       </div>
       <p className="text-sm text-gray-600">
-        <strong>Cámara:</strong> {currentPhoto.camera.full_name} <br />
-        <strong>Fecha en la Tierra:</strong> {currentPhoto.earth_date} <br />
-        <strong>Imagen {index + 1} de {photos.length}</strong>
+        <strong>{t('camera')}:</strong> {currentPhoto.camera.full_name} <br />
+        <strong>{t('dateEarth')}:</strong> {currentPhoto.earth_date} <br />
+        <strong>{t('image')} {index + 1} {t('of')} {photos.length}</strong>
       </p>
     </div>
   );

@@ -3,11 +3,13 @@ import { useState, useRef, useEffect } from "react";
 
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
-import { DashboardLayoutComponent } from "@syncfusion/ej2-react-layouts";
+import { useTranslation } from "react-i18next";
 
-import DateRangeSelector from "./DateRangeSelector";
 import { useAppStore } from "../store/useAppStore";
 import { useWidgetStore } from "../store/useWidgetStore";
+
+import DateRangeSelector from "./DateRangeSelector";
+import ErrorBoundary from "./ErrorBoundary";
 
 interface HeaderProps {
     addWidgetToLayout: (widget: Widget) => void
@@ -17,6 +19,7 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
 
     const { editMode, updateEditMode } = useAppStore();
     const { widgets, addWidget } = useWidgetStore();
+    const { t } = useTranslation();
 
     const btnobj = useRef<ButtonComponent>(null);
     const lineObj = useRef<HTMLDivElement>(null);
@@ -43,21 +46,7 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
     };
 
     const getTitle = (type:WidgetType) => {
-        switch(type){
-            default:
-            case "apod":
-                return "Astronomy Picture of the Day";
-            case "neo":
-                return "Near Earth Object";
-            case "cme":
-                return "Coronal Mass Ejection";
-            case "gst":
-                return "GST";
-            case "insight":
-                return "InSight";
-            case "curiosity":
-                return "Curiosity";
-        }
+        return t(type);
     };
 
     const dlgClick = () => {
@@ -90,19 +79,19 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
         <div id="dialogcontent">
             <div>
                 <div id="apodtemplate" ref={lineObj}>
-                    <p className="dialog-text" data-type="apod">Apod</p>
-                    <p className="dialog-text" data-type="cme">Cme</p>
-                    <p className="dialog-text" data-type="curiosity">Curiosity</p>
-                    <p className="dialog-text" data-type="gst">Gst</p>
-                    <p className="dialog-text" data-type="insight">Insight</p>
-                    <p className="dialog-text" data-type="neo">Neo</p>
+                    <p className="dialog-text" data-type="apod">{t('apod')}</p>
+                    <p className="dialog-text" data-type="neo">{t('neo')}</p>
+                    <p className="dialog-text" data-type="cme">{t('cme')}</p>
+                    <p className="dialog-text" data-type="gst">{t('gst')}</p>
+                    <p className="dialog-text" data-type="insight">{t('insight')}</p>
+                    <p className="dialog-text" data-type="curiosity">{t('curiosity')}</p>
                 </div>
             </div>
         </div>
     );
 
 
-    return <>
+    return <ErrorBoundary>
         <div>
             <div className="flex">
                 <DateRangeSelector/>
@@ -114,7 +103,7 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
                     isToggle={true}
                     onClick={btnClick}
                 >
-                    {editMode ? "Save" : "Edit"}
+                    {editMode ? t('save') : t('edit')}
                 </ButtonComponent>
             </div>
             <div style={{ padding: "5px", marginBottom: "5px", textAlign: "end" }}>
@@ -124,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
                     style={{ display: display }}
                     onClick={dlgClick}
                 >
-                    Add New Widget
+                    {t('addWidget')}
                 </div>
             </div>
         </div>
@@ -132,14 +121,14 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
             id="listdialog"
             width="500px"
             visible={isVisible}
-            header={"Add a widget"}
+            header={t('addWidget')}
             showCloseIcon={true}
             animationSettings={{ effect: 'Zoom' }}
             isModal={true}
             target='#edit_target'
             content={content}
         />
-    </>
+    </ErrorBoundary>
 }
 
 export default Header;

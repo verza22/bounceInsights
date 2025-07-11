@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
+import { useTranslation } from "react-i18next";
 const Highcharts = require('highcharts');
 
 interface GstProps {
@@ -11,6 +12,7 @@ interface GstProps {
 const Cme: React.FC<GstProps> = ({id, setLoading}) => {
 
   const { dateFrom, dateTo } = useDateStore();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
 
@@ -25,7 +27,7 @@ const Cme: React.FC<GstProps> = ({id, setLoading}) => {
       loadChart(res.data);
     })
     .catch(err => {
-      console.error("Error al obtener datos de la NASA:", err);
+      // TO DO show error with toast
     })
     .finally(() => {
       setLoading(false);
@@ -42,14 +44,17 @@ const Cme: React.FC<GstProps> = ({id, setLoading}) => {
           type: 'column'
         },
         title: {
-          text: 'Índice Kp diario (Tormentas Geomagnéticas)'
+          text: t('gstDaily')
         },
         credits: {
           enabled: false
         },
+        legend: {
+          enabled: false
+        },
         xAxis: {
           categories: categories,
-          title: { text: 'Fecha' },
+          title: { text: '' },
           labels: {
             rotation: -45
           }
@@ -57,10 +62,10 @@ const Cme: React.FC<GstProps> = ({id, setLoading}) => {
         yAxis: {
           min: 0,
           max: 9,
-          title: { text: 'Kp Index' }
+          title: { text: t('kpIndex') }
         },
         series: [{
-          name: 'Kp Index',
+          name: t('kpIndex'),
           data: values
         }]
       });

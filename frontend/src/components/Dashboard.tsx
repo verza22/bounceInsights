@@ -4,6 +4,7 @@ import { useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 
 import { DashboardLayoutComponent } from "@syncfusion/ej2-react-layouts";
 
 import { useWidgetStore } from "../store/useWidgetStore";
+import { useAppStore } from "../store/useAppStore";
 
 import Header from "./widgets/Header";
 import Apod from "./widgets/Apod";
@@ -13,7 +14,7 @@ import Gst from "./widgets/Gst";
 import InSight from "./widgets/InSight";
 import Curiosity from "./widgets/Curiosity";
 import Widget, { WidgetRef } from "./widgets/Widget";
-import { useAppStore } from "../store/useAppStore";
+import ErrorBoundary from "./ErrorBoundary";
 
 export interface DashboardRef {
     addWidgetToLayout: (widget: Widget) => void;
@@ -102,11 +103,11 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         >{content}</Widget>;
     };
 
-    const deleteWidget = (id: number) => {
+    const deleteWidget = useCallback((id: number) => {
         removeWidget(id);//remove from store
         widgetRefMap.current[id]?.current?.unmountWidget();//unmount widget
         dashboardObj.current?.removePanel('_layout' + id);//remove from layout
-    };
+    }, []);
 
     const refreshWidget = (id: number) => {
         widgetRefMap.current[id]?.current?.refresh();
@@ -122,17 +123,19 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     //     }
     // };
 
-    return <DashboardLayoutComponent
-        id="edit_dashboard"
-        columns={4}
-        cellSpacing={cellSpacing}
-        ref={dashboardObj}
-        // resizeStop={onPanelResize}
-        allowResizing={editMode}
-        allowDragging={editMode}
-        showGridLines={editMode}
-    >
-    </DashboardLayoutComponent>
+    return <ErrorBoundary>
+        <DashboardLayoutComponent
+            id="edit_dashboard"
+            columns={4}
+            cellSpacing={cellSpacing}
+            ref={dashboardObj}
+            // resizeStop={onPanelResize}
+            allowResizing={editMode}
+            allowDragging={editMode}
+            showGridLines={editMode}
+        >
+        </DashboardLayoutComponent>
+    </ErrorBoundary>
 });
 
 export default Dashboard;

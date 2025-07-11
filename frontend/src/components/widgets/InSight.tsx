@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "./../../utils/axios";
+import { useTranslation } from "react-i18next";
 const Highcharts = require("highcharts");
 
 interface InsightProps {
@@ -8,6 +9,9 @@ interface InsightProps {
 }
 
 const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
+
+  const { t } = useTranslation();
+  
   React.useEffect(() => {
 
     setLoading(true);
@@ -16,11 +20,11 @@ const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
       if (Array.isArray(res.data)) {
         loadChart(res.data);
       } else {
-        console.error("Datos inesperados del backend:", res.data);
+        // TO DO show error with toast
       }
     })
     .catch((err) => {
-      console.error("Error al obtener datos de InSight:", err);
+      // TO DO show error with toast
     })
     .finally(() => {
       setLoading(false);
@@ -40,18 +44,18 @@ const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
         type: "area"
       },
       title: {
-        text: "Temperaturas mínimas y máximas en Marte (por sol)",
-        align: "left"
+        text: t('marsTitle'),
+        align: "center"
       },
       credits: {
         enabled: false
       },
       xAxis: {
         categories,
-        title: { text: "Sol (día marciano)" }
+        title: { text: t('marsSol') }
       },
       yAxis: {
-        title: { text: "Temperatura (°C)" },
+        title: { text: t('marsTemperature') },
         labels: { format: "{value}°" }
       },
       tooltip: {
@@ -68,13 +72,13 @@ const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
       },
       series: [
         {
-          name: "Temperatura máxima",
+          name: t('marsMax'),
           data: maxTemps,
           color: "#FF5733",
           type: "area"
         },
         {
-          name: "Temperatura mínima",
+          name: t('marsMin'),
           data: minTemps,
           color: "#1E90FF",
           type: "line"
@@ -84,10 +88,7 @@ const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
   };
 
   return (
-    <div
-      id={"container-insight-"+id}
-      style={{ width: "100%", maxWidth: 700, height: 400, margin: "0 auto" }}
-    ></div>
+    <div id={"container-insight-"+id} style={{ width: "100%", maxWidth: 700, height: 400, margin: "0 auto" }}></div>
   );
 };
 

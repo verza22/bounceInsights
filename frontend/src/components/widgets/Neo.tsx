@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
+import { useTranslation } from "react-i18next";
 const Highcharts = require('highcharts');
 
 interface NeoProps {
@@ -11,6 +12,7 @@ interface NeoProps {
 const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
 
     const { dateFrom, dateTo } = useDateStore();
+    const { t } = useTranslation();
 
     React.useEffect(()=>{
 
@@ -28,7 +30,7 @@ const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
             }
         })
         .catch(err => {
-            console.error("Error al obtener datos de la NASA:", err);
+            // TO DO show error with toast
         })
         .finally(() => {
             setLoading(false);
@@ -48,8 +50,8 @@ const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
                 type: 'line'
             },
             title: {
-                text: 'Número de asteroides cercanos a la Tierra por día',
-                align: 'left'
+                text: t('asteroidsTitle'),
+                align: 'center'
             },
             credits: {
                 enabled: false
@@ -57,17 +59,20 @@ const Neo: React.FC<NeoProps> = ({id, setLoading}) => {
             xAxis: {
                 categories: data.map(item => item.date),
                 title: {
-                    text: 'Fecha'
+                    text: ''
                 }
+            },
+            legend: {
+                enabled: false
             },
             yAxis: {
                 title: {
-                    text: 'Cantidad de asteroides'
+                    text: t('asteroidsCount')
                 },
                 allowDecimals: false
             },
             series: [{
-                name: 'Asteroides',
+                name: t('asteroidsLabel'),
                 data: data.map(item => item.count)
             }],
             responsive: {

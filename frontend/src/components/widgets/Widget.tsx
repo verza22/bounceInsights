@@ -3,6 +3,7 @@ import Icon from '@mdi/react';
 import { mdiLoading, mdiTrashCan } from '@mdi/js';
 
 import { useAppStore } from "../../store/useAppStore";
+import ErrorBoundary from "../ErrorBoundary";
 
 export interface WidgetRef {
   refresh: () => void;
@@ -37,23 +38,25 @@ interface WidgetProps {
   
     return (
       <div className="template">
-        {
-          loading && 
-          <div className="loading-widget">
-            <div className="m-auto">
-              <Icon path={mdiLoading} size={2} className="animate-spin"/>
+        <ErrorBoundary>
+          {
+            loading && 
+            <div className="loading-widget">
+              <div className="m-auto">
+                <Icon path={mdiLoading} size={2} className="animate-spin"/>
+              </div>
             </div>
-          </div>
-        }
-        {
-          editMode && 
-          <div className="edit-mode-widget">
-            <div className="m-auto cursor-pointer" title="Remove widget" onClick={()=> removeWidget(id)}>
-              <Icon path={mdiTrashCan} size={2} />
+          }
+          {
+            editMode && 
+            <div className="edit-mode-widget">
+              <div className="m-auto cursor-pointer" title="Remove widget" onClick={()=> removeWidget(id)}>
+                <Icon path={mdiTrashCan} size={2} />
+              </div>
             </div>
-          </div>
-        }
-        {mount ? children({ loading, setLoading }) : null}
+          }
+          {mount ? children({ loading, setLoading }) : null}
+        </ErrorBoundary>
       </div>
     );
   });

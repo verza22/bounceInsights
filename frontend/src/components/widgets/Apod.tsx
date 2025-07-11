@@ -35,7 +35,7 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
       }
     })
     .catch(err => {
-      console.error("Error al obtener datos de la NASA:", err);
+      // TO DO show error with toast
     })
     .finally(() => {
       setLoading(false);

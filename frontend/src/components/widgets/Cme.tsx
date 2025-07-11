@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
+import { useTranslation } from "react-i18next";
 
 const Highcharts = require('highcharts');
 
@@ -12,6 +13,7 @@ interface CmeProps {
 const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
 
   const { dateFrom, dateTo } = useDateStore();
+  const { t } = useTranslation();
 
   React.useEffect(() => {
 
@@ -26,11 +28,11 @@ const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
       if (Array.isArray(res.data)) {
         loadChart(res.data);
       } else {
-        console.error("Datos inesperados del backend:", res.data);
+        // TO DO show error with toast
       }
     })
     .catch(err => {
-      console.error("Error al obtener datos de la NASA:", err);
+      // TO DO show error with toast
     })
     .finally(() => {
       setLoading(false);
@@ -44,11 +46,11 @@ const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
         type: 'pie'
       },
       title: {
-        text: 'Distribución de eventos CME por región solar',
-        align: 'left'
+        text: t('cmeDistribution'),
+        align: 'center'
       },
       tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y} eventos)'
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y} '+t('events')+')'
       },
       credits: {
         enabled: false
@@ -69,7 +71,7 @@ const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
         }
       },
       series: [{
-        name: 'Eventos CME',
+        name: t('cmeEvents'),
         colorByPoint: true,
         data: pieData
       }]
