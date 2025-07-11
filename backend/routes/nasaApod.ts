@@ -1,10 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { fetchWithFallback } from '../utils/utils';
 import { validateFields } from '../utils/validateFields';
-import { NASA_API_TOKEN } from '../config';
-import { sendToClient } from '../sockets/websocket';
+import { OpenAIClient } from '../utils/openAIClient';
 
 const router = Router();
+const openaiClient = OpenAIClient.getInstance();
 
 router.get("/apod", async (req: Request, res: Response) => {
   const { dateFrom, clientId } = req.query as { dateFrom: string, clientId: string };
@@ -18,7 +18,7 @@ router.get("/apod", async (req: Request, res: Response) => {
     res.status(400).json({ errors });
   }
 
-  const url = `https://api.nasa.gov/planetary/apod?date=${dateFrom}&api_key=${NASA_API_TOKEN}`;
+  const url = `https://api.nasa.gov/planetary/apod?date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
   const fallback = "./responses/apod.json";
 
   try {
@@ -26,10 +26,8 @@ router.get("/apod", async (req: Request, res: Response) => {
 
     const { hdurl, title, explanation } = data;
 
-    sendToClient(clientId, { type: "apodTitle", payload: title });
-    setTimeout(()=> {
-      sendToClient(clientId, { type: "apodExplanation", payload: explanation });
-    },5000);
+    openaiClient.sendTranslateText(clientId, "apodTitle", title, "ESP");
+    openaiClient.sendTranslateText(clientId, "apodExplanation", explanation, "ESP");
 
     res.json({ hdurl });
   } catch (err) {

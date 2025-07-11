@@ -18,8 +18,12 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
 
   React.useEffect(()=> {
 
-    const onTitle = (payload: string) => setTitle(payload);
-    const onExplanation = (payload: string) => setExplanation(payload);
+    const onTitle = (payload: string) => setTitle(_title => {
+      return _title === "Loading..." ? payload : _title+payload;
+    });
+    const onExplanation = (payload: string) => setExplanation(_explanation => {
+      return _explanation === "Loading..." ? payload : _explanation+payload;
+    });
 
     addWebSocketListener("apodTitle", onTitle);
     addWebSocketListener("apodExplanation", onExplanation);
@@ -33,6 +37,8 @@ const Apod: React.FC<ApodProps> = ({setLoading}) => {
   React.useEffect(()=>{
     
     setLoading(true);
+    setTitle('Loading...');
+    setExplanation('Loading...');
     axios.get("nasa/apod",{
       params: {
         dateFrom,

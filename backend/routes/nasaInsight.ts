@@ -1,11 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { fetchWithFallback } from '../utils/utils';
-import { NASA_API_TOKEN } from '../config';
 
 const router = Router();
 
 router.get("/insight", async (req: Request, res: Response) => {
-    const url = `https://api.nasa.gov/insight_weather/?api_key=${NASA_API_TOKEN}&feedtype=json&ver=1.0`;
+    const url = `https://api.nasa.gov/insight_weather/?api_key=${process.env.NASA_API_TOKEN}&feedtype=json&ver=1.0`;
     const fallback = "./responses/inSight.json";
   
     try {

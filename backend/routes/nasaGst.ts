@@ -1,7 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { fetchWithFallback } from '../utils/utils';
 import { validateFields } from '../utils/validateFields';
-import { NASA_API_TOKEN } from '../config';
 
 const router = Router();
 
@@ -17,7 +16,7 @@ router.get("/gst", async (req: Request, res: Response) => {
       res.status(400).json({ errors });
     }
   
-    const url = `https://api.nasa.gov/DONKI/GST?startDate=${dateFrom}&endDate=${dateTo}&api_key=${NASA_API_TOKEN}`;
+    const url = `https://api.nasa.gov/DONKI/GST?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
     const fallback = "./responses/gst.json";
   
     try {

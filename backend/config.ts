@@ -1,1 +1,1 @@
-export const NASA_API_TOKEN = "wLjZFSIWiklBQZySE061gnmNH3yR4QKEKnp2fLOb";
+export const MODEL_OPENAI = "gpt-4o-mini";
