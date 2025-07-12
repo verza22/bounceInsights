@@ -5,6 +5,7 @@ import cme from './nasaCme';
 import gst from './nasaGst';
 import insight from './nasaInsight';
 import curiosity from './nasaCuriosity';
+import quiz from './nasaQuiz';
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use('/nasa', cme);
 router.use('/nasa', gst);
 router.use('/nasa', insight);
 router.use('/nasa', curiosity);
+router.use('/nasa', quiz);
 
 export default router;

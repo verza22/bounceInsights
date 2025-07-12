@@ -7,14 +7,16 @@ import { useWidgetStore } from "../store/useWidgetStore";
 import { useAppStore } from "../store/useAppStore";
 
 import Header from "./widgets/Header";
+import ErrorBoundary from "./ErrorBoundary";
+import Widget, { WidgetRef } from "./widgets/Widget";
+
 import Apod, { ApodRef } from "./widgets/Apod";
 import Neo from "./widgets/Neo";
 import Cme from "./widgets/Cme";
 import Gst from "./widgets/Gst";
 import InSight from "./widgets/InSight";
 import Curiosity, { CuriosityRef } from "./widgets/Curiosity";
-import Widget, { WidgetRef } from "./widgets/Widget";
-import ErrorBoundary from "./ErrorBoundary";
+import Quiz, { QuizRef } from "./widgets/Quiz";
 
 export interface DashboardRef {
     addWidgetToLayout: (widget: Widget) => void;
@@ -28,6 +30,8 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     const widgetRefMap = useRef<Record<number, React.RefObject<WidgetRef | null>>>({});
     const apodRefMap = useRef<Record<number, React.RefObject<ApodRef | null>>>({});
     const curiosityRefMap = useRef<Record<number, React.RefObject<CuriosityRef | null>>>({});
+    const quizRefMap = useRef<Record<number, React.RefObject<QuizRef | null>>>({});
+
     const dashboardObj = useRef<DashboardLayoutComponent>(null);
 
     const cellSpacing: [number, number] = [10, 10];
@@ -102,6 +106,14 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
                     <Curiosity setLoading={setLoading} ref={curiosityRefMap.current[id]} />
                 );
             break;
+            case "quiz":
+                if (!quizRefMap.current[id]) {
+                    quizRefMap.current[id] = React.createRef<QuizRef>();
+                }
+                content = ({ setLoading }) => (
+                    <Quiz setLoading={setLoading} ref={quizRefMap.current[id]} />
+                );
+            break;
         }
     
         return <Widget 
@@ -130,6 +142,11 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         for (const ref of Object.values(curiosityRefMap.current)) {
             if (ref?.current) {
                 ref.current?.getCuriosityData(dateFrom);
+            }
+        }
+        for (const ref of Object.values(quizRefMap.current)) {
+            if (ref?.current) {
+                ref.current?.getQuizData(dateFrom);
             }
         }
     }, []);

@@ -80,12 +80,13 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
         <div id="dialogcontent">
             <div>
                 <div id="apodtemplate" ref={lineObj}>
-                    <p className="dialog-text" data-type="apod">{t('apod')}</p>
-                    <p className="dialog-text" data-type="neo">{t('neo')}</p>
-                    <p className="dialog-text" data-type="cme">{t('cme')}</p>
-                    <p className="dialog-text" data-type="gst">{t('gst')}</p>
-                    <p className="dialog-text" data-type="insight">{t('insight')}</p>
-                    <p className="dialog-text" data-type="curiosity">{t('curiosity')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="apod">{t('apod')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="neo">{t('neo')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="cme">{t('cme')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="gst">{t('gst')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="insight">{t('insight')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="curiosity">{t('curiosity')}</p>
+                    <p className="dialog-text cursor-pointer" data-type="quiz">{t('quiz')}</p>
                 </div>
             </div>
         </div>
