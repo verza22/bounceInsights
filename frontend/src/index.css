@@ -38,3 +38,8 @@
 .e-dialog{
     max-height: initial!important;
 }
+
+.template-widget{
+    position: relative;
+    height: 100%;
+}

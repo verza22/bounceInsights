@@ -24,7 +24,7 @@ export interface DashboardRef {
 
 const Dashboard = forwardRef<DashboardRef>((_, ref) => {
 
-    const { widgets, removeWidget } = useWidgetStore();
+    const { widgets, removeWidget, updateWidgets } = useWidgetStore();
     const { editMode } = useAppStore(); 
 
     const widgetRefMap = useRef<Record<number, React.RefObject<WidgetRef | null>>>({});
@@ -151,26 +151,35 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         }
     }, []);
 
-    // const onPanelResize = (args: ResizeArgs) => {
-    //     const chartEl = args.element?.querySelector('.e-panel-container .e-panel-content div div') as any;
-    //     const chartObj = chartEl?.ej2_instances?.[0] as ChartComponent;
-    //     if (chartObj) {
-    //         chartObj.height = '95%';
-    //         chartObj.width = '100%';
-    //         chartObj.refresh();
-    //     }
-    // };
+    const onChange = () => {
+        //update widgets size and position
+        let widgetsAux = [...widgets];
+        widgetsAux.map(w => {
+            const i = dashboardObj.current?.panels.findIndex(x=> x.id === '_layout' + w.id);
+            if(typeof i === "number" && i >= 0 && dashboardObj.current?.panels[i]){
+                const widgetLayout = dashboardObj.current?.panels[i];
+
+                w.col = widgetLayout.col ?? 0;
+                w.row = widgetLayout.row ?? 0;
+                w.sizeX = widgetLayout.sizeX ?? 2;
+                w.sizeY = widgetLayout.sizeY ?? 2;
+            }
+        });
+
+        updateWidgets(widgetsAux);
+    };
 
     return <ErrorBoundary>
         <DashboardLayoutComponent
-            id="edit_dashboard"
             columns={4}
             cellSpacing={cellSpacing}
             ref={dashboardObj}
-            // resizeStop={onPanelResize}
             allowResizing={editMode}
             allowDragging={editMode}
             showGridLines={editMode}
+            allowFloating={false}
+            dragStop={onChange}
+            resizeStop={onChange}
         >
         </DashboardLayoutComponent>
     </ErrorBoundary>

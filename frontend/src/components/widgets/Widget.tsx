@@ -56,9 +56,7 @@ const Widget = forwardRef<WidgetRef, WidgetProps>(
       setError
     }));
 
-    return (
-      <div className="template relative">
-        <ErrorBoundary>
+    return <ErrorBoundary>
           {loading && (
             <div className="loading-widget absolute inset-0 z-10 bg-white bg-opacity-50 flex justify-center items-center">
               <Icon path={mdiLoading} size={2} className="animate-spin" />
@@ -66,9 +64,9 @@ const Widget = forwardRef<WidgetRef, WidgetProps>(
           )}
 
           {editMode && (
-            <div className="edit-mode-widget absolute top-2 right-2 z-20">
+            <div className="edit-mode-widget">
               <div
-                className="cursor-pointer"
+                className="cursor-pointer m-auto"
                 title="Remove widget"
                 onClick={() => removeWidget(id)}
               >
@@ -76,25 +74,24 @@ const Widget = forwardRef<WidgetRef, WidgetProps>(
               </div>
             </div>
           )}
-
-          {mount ? children({ loading, setLoading, setError }) : null}
-        </ErrorBoundary>
-
-        {error && (
-          <div className="absolute right-4 bg-red-200 text-black px-4 py-3 rounded shadow-lg z-50 flex items-start w-80">
+       
+        {(!editMode && error) && (
+          <div className="absolute bottom-4 right-4 bg-red-200 text-black px-4 py-3 rounded shadow-lg z-50 flex items-start w-80">
             <div className="flex-grow">
               {error}
             </div>
             <button
               className="ml-4 font-bold text-black hover:text-red-700"
               onClick={() => setErrorState(null)}
-            >
+              >
               ×
             </button>
           </div>
         )}
-      </div>
-    );
+
+        {mount ? children({ loading, setLoading, setError }) : null}
+      </ErrorBoundary>
+    ;
   }
 );
 
