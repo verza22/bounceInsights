@@ -26,7 +26,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
   const { clientId } = useAppStore();
 
   React.useEffect(() => {
-    // getQuizData(dateFrom);
+    getQuizData(dateFrom);
   }, [dateFrom]);
 
   const shuffleArray = (array: QuizItem[]) => {

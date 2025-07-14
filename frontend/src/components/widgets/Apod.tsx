@@ -55,7 +55,7 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) 
       params: {
         dateFrom,
         clientId,
-        // currentLang
+        currentLang
       }
     })
     .then(res => {
