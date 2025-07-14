@@ -13,14 +13,15 @@ interface MarsPhoto {
 }
 
 interface CuriosityProps {
-  setLoading: (val: boolean) => void
+  setLoading: (val: boolean) => void,
+  setError: (msg: string) => void
 }
 
 export interface CuriosityRef {
   getCuriosityData: (dateFrom: string) => void
 }
 
-const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading}, ref) => {
+const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading, setError}, ref) => {
 
   const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
   const [index, setIndex] = React.useState(0);
@@ -42,11 +43,12 @@ const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading}, 
       if (res.data && Array.isArray(res.data.photos)) {
         setPhotos(res.data.photos);
       } else {
-        // TO DO show error with toast
+        setError("error.400-001");
       }
     })
     .catch(err => {
-      // TO DO show error with toast
+      const error = err?.response?.data?.error ? err.response.data.error : err.message;
+      setError(error);
     })
     .finally(() => {
       setLoading(false);

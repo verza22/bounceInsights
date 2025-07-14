@@ -7,13 +7,13 @@ const router = Router();
 router.get("/gst", async (req: Request, res: Response) => {
     const { dateFrom, dateTo } = req.query;
   
-    const { valid, errors } = validateFields(req.query, [
+    const { valid } = validateFields(req.query, [
       { field: 'dateFrom', type: 'string', required: true },
       { field: 'dateTo', type: 'string', required: true },
     ]);
   
     if (!valid) {
-      res.status(400).json({ errors });
+      res.status(400).json({ error: 'error.400' });
     }
   
     const url = `https://api.nasa.gov/DONKI/GST?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
@@ -32,8 +32,7 @@ router.get("/gst", async (req: Request, res: Response) => {
   
       res.json(kpEntries);
     } catch (err) {
-      console.error("Error al procesar datos de GST:", err);
-      res.status(500).json({ error: "Error al procesar datos de GST" });
+      res.status(500).json({ error: 'error.500-002' });
     }
 });
 

@@ -30,5 +30,12 @@
     "asteroidsLabel": "Asteroids",
     "en": "English",
     "es": "Spanish",
-    "de": "German"
+    "de": "German",
+    "error": {
+        "400": "One or more required fields are missing from the request body",
+        "400-001": "Failed to properly format data",
+        "400-002": "Invalid date format. Use YYYY-MM-DD",
+        "500-001": "The selected language is not supported",
+        "500-002": "Failed to get data from Nasa API"
+    }
 }

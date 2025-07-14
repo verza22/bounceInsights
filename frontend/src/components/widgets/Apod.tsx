@@ -6,14 +6,15 @@ import { useAppStore } from "../../store/useAppStore";
 import { addWebSocketListener, removeWebSocketListener } from "../../utils/websocket";
 
 interface ApodProps {
-  setLoading: (val: boolean) => void
+  setLoading: (val: boolean) => void,
+  setError: (msg: string) => void
 }
 
 export interface ApodRef {
   getApodData: (dateFrom: string) => void
 }
 
-const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading}, ref) => {
+const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) => {
 
   const [image, setImage] = React.useState('');
   const [title, setTitle] = React.useState('');
@@ -54,7 +55,7 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading}, ref) => {
       params: {
         dateFrom,
         clientId,
-        currentLang
+        // currentLang
       }
     })
     .then(res => {
@@ -64,7 +65,8 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading}, ref) => {
       }
     })
     .catch(err => {
-      // TO DO show error with toast
+      const error = err?.response?.data?.error ? err.response.data.error : err.message;
+      setError(error);
     })
     .finally(() => {
       setLoading(false);

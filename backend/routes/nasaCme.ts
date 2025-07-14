@@ -7,13 +7,13 @@ const router = Router();
 router.get("/cme", async (req: Request, res: Response) => {
     const { dateFrom, dateTo } = req.query;
   
-    const { valid, errors } = validateFields(req.query, [
+    const { valid } = validateFields(req.query, [
       { field: 'dateFrom', type: 'string', required: true },
       { field: 'dateTo', type: 'string', required: true },
     ]);
   
     if (!valid) {
-      res.status(400).json({ errors });
+      res.status(400).json({ error: 'error.400' });
     }
   
     const url = `https://api.nasa.gov/DONKI/CME?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
@@ -24,7 +24,7 @@ router.get("/cme", async (req: Request, res: Response) => {
       const groupedData = groupByRegion(rawData);
       res.json(groupedData);
     } catch (err) {
-      res.status(500).json({ error: "Error al procesar los datos de CME" });
+      res.status(500).json({ error: 'error.500-002' });
     }
 });
 

@@ -22,8 +22,7 @@ router.get("/insight", async (req: Request, res: Response) => {
   
       res.json(result);
     } catch (err) {
-      console.error("Error al procesar datos de InSight:", err);
-      res.status(500).json({ error: "Error al procesar datos de InSight" });
+      res.status(500).json({ error: 'error.500-002' });
     }
 });
 

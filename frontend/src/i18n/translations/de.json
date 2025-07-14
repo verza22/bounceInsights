@@ -30,5 +30,12 @@
     "asteroidsLabel": "Asteroiden",
     "en": "Englisch",
     "es": "Spanisch",
-    "de": "Deutsch"
+    "de": "Deutsch",
+    "error": {
+      "400": "Ein oder mehrere erforderliche Felder fehlen im Anfragekörper",
+      "400-001": "Daten konnten nicht korrekt formatiert werden",
+      "400-002": "Ungültiges Datumsformat. Verwenden Sie JJJJ-MM-TT",
+      "500-001": "Die ausgewählte Sprache wird nicht unterstützt",
+      "500-002": "Abrufen von Daten von der NASA-API fehlgeschlagen"
+    }
   }

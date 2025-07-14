@@ -66,7 +66,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
             widgetRefMap.current[id] = React.createRef<WidgetRef>();
         }        
     
-        let content: (props: { setLoading: (val: boolean) => void }) => React.ReactNode;
+        let content: (props: { setLoading: (val: boolean) => void, setError: (msg: string) => void }) => React.ReactNode;
 
         switch (type) {
             default:
@@ -74,44 +74,44 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
                 if (!apodRefMap.current[id]) {
                     apodRefMap.current[id] = React.createRef<ApodRef>();
                 }
-                content = ({ setLoading }) => (
-                    <Apod setLoading={setLoading} ref={apodRefMap.current[id]} />
+                content = ({ setLoading, setError }) => (
+                    <Apod setLoading={setLoading} setError={setError} ref={apodRefMap.current[id]} />
                 );
             break;
             case "neo":
-                content = ({ setLoading }) => (
-                    <Neo id={id} setLoading={setLoading} changeDateFrom={changeDateFrom} />
+                content = ({ setLoading, setError }) => (
+                    <Neo id={id} setLoading={setLoading} setError={setError} changeDateFrom={changeDateFrom} />
                 );
             break;
             case "cme":
-                content = ({ setLoading }) => (
-                    <Cme id={id} setLoading={setLoading} />
+                content = ({ setLoading, setError }) => (
+                    <Cme id={id} setLoading={setLoading} setError={setError} />
                 );
             break;
             case "gst":
-                content = ({ setLoading }) => (
-                    <Gst id={id} setLoading={setLoading} changeDateFrom={changeDateFrom} />
+                content = ({ setLoading, setError }) => (
+                    <Gst id={id} setLoading={setLoading} setError={setError} changeDateFrom={changeDateFrom} />
                 );
             break;
             case "insight":
-                content = ({ setLoading }) => (
-                    <InSight id={id} setLoading={setLoading} />
+                content = ({ setLoading, setError }) => (
+                    <InSight id={id} setLoading={setLoading} setError={setError} />
                 );
             break;
             case "curiosity":
                 if (!curiosityRefMap.current[id]) {
                     curiosityRefMap.current[id] = React.createRef<CuriosityRef>();
                 }
-                content = ({ setLoading }) => (
-                    <Curiosity setLoading={setLoading} ref={curiosityRefMap.current[id]} />
+                content = ({ setLoading, setError }) => (
+                    <Curiosity setLoading={setLoading} setError={setError} ref={curiosityRefMap.current[id]} />
                 );
             break;
             case "quiz":
                 if (!quizRefMap.current[id]) {
                     quizRefMap.current[id] = React.createRef<QuizRef>();
                 }
-                content = ({ setLoading }) => (
-                    <Quiz setLoading={setLoading} ref={quizRefMap.current[id]} />
+                content = ({ setLoading, setError }) => (
+                    <Quiz setLoading={setLoading} setError={setError} ref={quizRefMap.current[id]} />
                 );
             break;
         }

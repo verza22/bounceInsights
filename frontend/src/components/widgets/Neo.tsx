@@ -7,10 +7,11 @@ const Highcharts = require('highcharts');
 interface NeoProps {
     id: number,
     setLoading: (val: boolean) => void,
-    changeDateFrom: (dateFrom: string) => void
+    changeDateFrom: (dateFrom: string) => void,
+    setError: (msg: string) => void
 }
 
-const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom}) => {
+const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom, setError}) => {
 
     const { dateFrom, dateTo } = useDateStore();
     const { t } = useTranslation();
@@ -31,8 +32,9 @@ const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom}) => {
             }
         })
         .catch(err => {
-            // TO DO show error with toast
-        })
+            const error = err?.response?.data?.error ? err.response.data.error : err.message;
+            setError(error);
+          })
         .finally(() => {
             setLoading(false);
         });

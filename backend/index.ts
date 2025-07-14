@@ -24,9 +24,9 @@ setupWebSocket(server);
 
 // Test route
 app.get('/', (req: Request, res: Response) => {
-  res.send('Backend funcionando con TypeScript');
+  res.send('Backend online!');
 });
 
 server.listen(PORT, () => {
-  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  console.log(`Server ON http://localhost:${PORT}`);
 });

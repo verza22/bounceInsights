@@ -42,7 +42,6 @@ export function validateFields(obj: Record<string, any>, rules: ValidationRule[]
             break;
 
         case 'date':
-            // Dates are assumed to be strings that can be parsed into valid Date objects
             if (typeof value !== 'string' || isNaN(Date.parse(value))) {
             errors.push(`Field '${rule.field}' must be a valid date string.`);
             }

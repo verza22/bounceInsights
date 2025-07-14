@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface WidgetStore {
     widgets: Widget[],
@@ -16,16 +17,24 @@ const defaultWidgets: Widget[] = [
     { id: 6, title: "Curiosity", type: "curiosity", sizeX: 2, sizeY: 2, row: 6, col: 0 },
 ];
 
-export const useWidgetStore = create<WidgetStore>((set) => ({
-    widgets: defaultWidgets,
-    removeWidget: (id: number) =>
-        set((state) => ({
+export const useWidgetStore = create<WidgetStore>()(
+    persist(
+      (set) => ({
+        widgets: defaultWidgets,
+        removeWidget: (id: number) =>
+          set((state) => ({
             widgets: state.widgets.filter((widget) => widget.id !== id),
-        }
-    )),
-    addWidget: (newWidget: Widget) =>
-        set((state) => {
-            return { widgets: [...state.widgets, newWidget] };
-        }
-    ),
-}));
+          })),
+        addWidget: (newWidget: Widget) =>
+          set((state) => ({
+            widgets: [...state.widgets, newWidget],
+          })),
+      }),
+      {
+        name: "widget-storage",
+        partialize: (state) => ({ 
+            widgets: state.widgets 
+        }),
+      }
+    )
+);

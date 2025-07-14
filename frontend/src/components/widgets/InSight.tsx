@@ -5,10 +5,11 @@ const Highcharts = require("highcharts");
 
 interface InsightProps {
   id: number,
-  setLoading: (val: boolean) => void
+  setLoading: (val: boolean) => void,
+  setError: (msg: string) => void
 }
 
-const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
+const Insight: React.FC<InsightProps> = ({id, setLoading, setError}) => {
 
   const { t } = useTranslation();
   
@@ -20,11 +21,12 @@ const Insight: React.FC<InsightProps> = ({id, setLoading}) => {
       if (Array.isArray(res.data)) {
         loadChart(res.data);
       } else {
-        // TO DO show error with toast
+        setError("error.400-001");
       }
     })
-    .catch((err) => {
-      // TO DO show error with toast
+    .catch(err => {
+      const error = err?.response?.data?.error ? err.response.data.error : err.message;
+      setError(error);
     })
     .finally(() => {
       setLoading(false);

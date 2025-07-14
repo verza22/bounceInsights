@@ -5,7 +5,8 @@ import { useDateStore } from "../../store/useDateStore";
 import { useAppStore } from "../../store/useAppStore";
 
 interface QuizProps {
-  setLoading: (val: boolean) => void;
+  setLoading: (val: boolean) => void,
+  setError: (msg: string) => void
 }
 
 export interface QuizRef {
@@ -17,7 +18,7 @@ interface QuizItem {
   isTrue: boolean;
 }
 
-const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading }, ref) => {
+const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref) => {
   const [date, setDate] = React.useState("");
   const [quizItems, setQuizItems] = React.useState<QuizItem[]>([]);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
@@ -25,7 +26,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading }, ref) => {
   const { clientId } = useAppStore();
 
   React.useEffect(() => {
-    getQuizData(dateFrom);
+    // getQuizData(dateFrom);
   }, [dateFrom]);
 
   const shuffleArray = (array: QuizItem[]) => {
@@ -65,8 +66,9 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading }, ref) => {
           }
         }
       })
-      .catch((err) => {
-        // TO DO: show error with toast
+      .catch(err => {
+        const error = err?.response?.data?.error ? err.response.data.error : err.message;
+        setError(error);
       })
       .finally(() => {
         setLoading(false);

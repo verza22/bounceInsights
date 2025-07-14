@@ -7,10 +7,11 @@ const Highcharts = require('highcharts');
 interface GstProps {
   id: number,
   setLoading: (val: boolean) => void,
-  changeDateFrom: (dateFrom: string) => void
+  changeDateFrom: (dateFrom: string) => void,
+  setError: (msg: string) => void
 }
 
-const Cme: React.FC<GstProps> = ({id, setLoading, changeDateFrom}) => {
+const Cme: React.FC<GstProps> = ({id, setLoading, changeDateFrom, setError}) => {
 
   const { dateFrom, dateTo } = useDateStore();
   const { t } = useTranslation();
@@ -28,7 +29,8 @@ const Cme: React.FC<GstProps> = ({id, setLoading, changeDateFrom}) => {
       loadChart(res.data);
     })
     .catch(err => {
-      // TO DO show error with toast
+      const error = err?.response?.data?.error ? err.response.data.error : err.message;
+      setError(error);
     })
     .finally(() => {
       setLoading(false);

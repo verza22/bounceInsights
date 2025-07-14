@@ -7,12 +7,12 @@ const router = Router();
 router.get("/curiosity", async (req: Request, res: Response) => {
     const { dateFrom } = req.query;
   
-    const { valid, errors } = validateFields(req.query, [
+    const { valid } = validateFields(req.query, [
       { field: 'dateFrom', type: 'string', required: true }
     ]);
   
     if (!valid) {
-      res.status(400).json({ errors });
+      res.status(400).json({ error: 'error.400' });
     }
   
     const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
@@ -20,10 +20,9 @@ router.get("/curiosity", async (req: Request, res: Response) => {
   
     try {
       const data = await fetchWithFallback(url, fallback);
-      res.json(data); // Devuelve todas las fotos del sol 1
+      res.json(data);
     } catch (err) {
-      console.error("Error al obtener datos del rover Curiosity:", err);
-      res.status(500).json({ error: "Error al obtener datos del rover Curiosity" });
+      res.status(500).json({ error: 'error.500-002' });
     }
 });
 

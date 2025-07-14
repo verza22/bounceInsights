@@ -7,10 +7,11 @@ const Highcharts = require('highcharts');
 
 interface CmeProps {
   id: number,
-  setLoading: (val: boolean) => void
+  setLoading: (val: boolean) => void,
+  setError: (msg: string) => void
 }
 
-const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
+const Cme: React.FC<CmeProps> = ({id, setLoading, setError}) => {
 
   const { dateFrom, dateTo } = useDateStore();
   const { t } = useTranslation();
@@ -28,11 +29,12 @@ const Cme: React.FC<CmeProps> = ({id, setLoading}) => {
       if (Array.isArray(res.data)) {
         loadChart(res.data);
       } else {
-        // TO DO show error with toast
+        setError("error.400-001");
       }
     })
     .catch(err => {
-      // TO DO show error with toast
+      const error = err?.response?.data?.error ? err.response.data.error : err.message;
+      setError(error);
     })
     .finally(() => {
       setLoading(false);
