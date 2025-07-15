@@ -5,7 +5,7 @@ import { wsMessage } from '../types/types';
 const clients = new Map<string, WebSocket>();
 
 export const setupWebSocket = (server: HttpServer) => {
-  const wss = new WebSocketServer({ server });
+  const wss = new WebSocketServer({ server, path: "/ws" });
 
   wss.on('connection', (ws: WebSocket) => {
     console.log('Websocket new connection');
