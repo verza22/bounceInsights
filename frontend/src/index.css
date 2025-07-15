@@ -1,5 +1,6 @@
 .e-panel-content{
     overflow-y: scroll;
+    display: flex;
 }
 
 .apod-img{
@@ -43,3 +44,30 @@
     position: relative;
     height: 100%;
 }
+
+.highcharts-point{
+    cursor: pointer;
+}
+
+.btn-base {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    outline: none;
+    border: 2px solid transparent;
+    font-family: inherit;
+    color: white!important;
+    background-color: #2563eb!important;
+    outline: none;
+  }
+  
+  .btn-base:hover {
+    background-color: #1e40af!important;
+  }
+  
+  .btn-outline:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #1e40af;
+  }

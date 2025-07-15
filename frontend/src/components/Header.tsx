@@ -11,6 +11,7 @@ import { useWidgetStore } from "../store/useWidgetStore";
 import DateRangeSelector from "./DateRangeSelector";
 import LanguageSwitcher from "./LanguageSwitcher";
 import ErrorBoundary from "./ErrorBoundary";
+const nasaLogo = new URL('./../assets/nasa.png', import.meta.url).href;
 
 interface HeaderProps {
     addWidgetToLayout: (widget: Widget) => void
@@ -22,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
     const { widgets, addWidget } = useWidgetStore();
     const { t } = useTranslation();
 
-    const btnobj = useRef<ButtonComponent>(null);
     const lineObj = useRef<HTMLDivElement>(null);
 
     const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -95,19 +95,25 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
 
     return <ErrorBoundary>
         <div>
-            <div className="flex">
-                <DateRangeSelector/>
-                <LanguageSwitcher/>
-                <ButtonComponent
-                    id="togglebtn"
-                    cssClass='e-outline e-flat e-primary'
-                    ref={btnobj}
-                    iconCss={icon}
-                    isToggle={true}
-                    onClick={btnClick}
-                >
-                    {editMode ? t('save') : t('edit')}
-                </ButtonComponent>
+            <div className="flex items-center justify-between px-6 bg-gradient-to-r from-black via-gray-900 to-black shadow-md">
+                <div className="flex items-center">
+                    <img
+                        src={nasaLogo}
+                        alt="NASA API"
+                        className="h-20 w-auto"
+                    />
+                    <div className="ml-6">
+                        <DateRangeSelector />
+                    </div>
+                </div>
+                <div>
+                    <button
+                        onClick={btnClick}
+                        className={`btn-base ${editMode ? '' : 'btn-outline'}`}
+                    >
+                        {editMode ? t('save') : t('edit')}
+                    </button>
+                </div>
             </div>
             <div style={{ padding: "5px", marginBottom: "5px", textAlign: "end" }}>
                 <div

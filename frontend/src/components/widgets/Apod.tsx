@@ -81,11 +81,11 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) 
     return null;
   }else{
     return (
-      <div className="max-w-xl mx-auto px-4 py-6 text-center">
+      <div className="px-4 py-6 text-center m-auto">
         <div className="text-center mb-2">{date}</div>
         <div className="w-full h-64 rounded-lg shadow-md mb-6 apod-img" style={{backgroundImage: "url('"+image+"')"}}></div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{title}</h2>
-        <p className="text-base text-gray-700 leading-relaxed text-justify">
+        <p className="leading-relaxed text-justify">
           {explanation}
         </p>
       </div>

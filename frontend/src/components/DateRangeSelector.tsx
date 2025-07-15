@@ -16,17 +16,12 @@ const DateRangeSelector: React.FC = () => {
         }
     };
 
-    return (
-        <div className="max-w-md mx-auto mt-4">
-        <label className="block mb-2 font-semibold">{t('dateRange')}:</label>
-        <DateRangePickerComponent
-            placeholder={t('dateRange')}
-            change={handleDateChange}
-            startDate={strFormatDate(dateFrom)}
-            endDate={strFormatDate(dateTo)}
-        />
-        </div>
-    );
+    return <DateRangePickerComponent
+        placeholder={t('dateRange')}
+        change={handleDateChange}
+        startDate={strFormatDate(dateFrom)}
+        endDate={strFormatDate(dateTo)}
+    />
 };
 
 export default DateRangeSelector;

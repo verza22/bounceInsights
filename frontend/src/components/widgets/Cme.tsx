@@ -80,7 +80,7 @@ const Cme: React.FC<CmeProps> = ({id, setLoading, setError}) => {
     });
   };
 
-  return <div id={"container-cme-"+id} style={{ width: '100%', maxWidth: 600, height: 400, margin: '0 auto' }}></div>;
+  return <div id={"container-cme-"+id} className="w-full h-full m-0"></div>;
 };
 
 export default Cme;

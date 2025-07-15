@@ -10,3 +10,8 @@ interface Widget {
     row: number,
     col: number
 }
+
+declare module '*.png' {
+    const value: string;
+    export default value;
+  }

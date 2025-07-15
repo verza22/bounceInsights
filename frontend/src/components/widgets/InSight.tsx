@@ -90,7 +90,7 @@ const Insight: React.FC<InsightProps> = ({id, setLoading, setError}) => {
   };
 
   return (
-    <div id={"container-insight-"+id} style={{ width: "100%", maxWidth: 700, height: 400, margin: "0 auto" }}></div>
+    <div id={"container-insight-"+id} className="w-full h-full m-0"></div>
   );
 };
 

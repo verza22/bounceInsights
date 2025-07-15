@@ -88,8 +88,8 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-6 text-center">
-      <div className="text-center mb-4 text-gray-600 font-medium">{date}</div>
+    <div className="px-4 py-6 text-center m-auto">
+      <div className="text-center mb-2">{date}</div>
       <div className="space-y-4">
         {quizItems.map((item, index) => {
           const isSelected = selectedIndex === index;
@@ -113,7 +113,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
               onClick={() => handleClick(index)}
               className={`${bgColor} p-4 rounded-lg border border-gray-300 transition`}
             >
-              <div className="text-base text-gray-800">{item.text}</div>
+              <div>{item.text}</div>
               {isSelected && (
                 <div className="mt-2 text-2xl">
                   {item.isTrue ? "😊" : "😞"}

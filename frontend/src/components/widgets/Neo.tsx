@@ -78,20 +78,6 @@ const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom, setError}) => 
                 name: t('asteroidsLabel'),
                 data: data.map(item => item.count)
             }],
-            responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 600
-                    },
-                    chartOptions: {
-                        legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
-                        }
-                    }
-                }]
-            },
             plotOptions: {
                 series: {
                   point: {
@@ -106,7 +92,7 @@ const Neo: React.FC<NeoProps> = ({id, setLoading, changeDateFrom, setError}) => 
         });
     };
 
-    return <div id={"container-neo-"+id}>
+    return <div id={"container-neo-"+id} className="w-full h-full m-0">
     </div>
 }
 

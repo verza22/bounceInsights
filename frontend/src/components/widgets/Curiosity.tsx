@@ -72,8 +72,8 @@ const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading, s
   const currentPhoto = photos[index];
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 text-center">
-      <div className="relative w-full h-72 md:h-96 bg-gray-200 rounded-lg overflow-hidden mb-4 shadow-md">
+    <div className="px-4 py-6 text-center h-full w-full flex flex-col">
+      <div className="relative w-full bg-gray-200 rounded-lg overflow-hidden mb-4 shadow-md flex-1">
         <img
           src={currentPhoto.img_src}
           alt={`Foto de la cámara ${currentPhoto.camera.full_name}`}
