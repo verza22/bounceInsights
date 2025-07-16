@@ -200,7 +200,7 @@ const Header: React.FC<HeaderProps> = ({ addWidgetToLayout, changeLayout }) => {
                 isModal={true}
                 target='#edit_target'
                 content={content}
-                close={(e:any)=> setIsVisible(false)}
+                close={()=> setIsVisible(false)}
                 locale={i18n.language.split('-')[0]}
             />
         }

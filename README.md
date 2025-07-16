@@ -96,6 +96,7 @@ When you open the app, you'll see 7 default widgets in the language of your brow
 - Use the date range selector at the top to filter data.
 - Press "Edit" to resize, move, add, or delete widgets.
 - Press "Refresh" on a widget to reload its data.
+- All data is stored in the localStorage, so when the browser page is refreshed (F5), the data remains the same.
 
 ---
 

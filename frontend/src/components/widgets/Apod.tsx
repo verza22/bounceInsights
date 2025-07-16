@@ -3,7 +3,7 @@ import i18n from "i18next";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useAppStore } from "../../store/useAppStore";
-import { addWebSocketListener, removeWebSocketListener } from "../../utils/websocket";
+import { addReconnectListener, addWebSocketListener, removeReconnectListener, removeWebSocketListener } from "../../utils/websocket";
 import { formatLocalizedDate } from "../../utils/utils";
 
 interface ApodProps {
@@ -24,21 +24,25 @@ const Apod = forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) => {
   const { dateFrom } = useDateStore();
   const { clientId } = useAppStore();
 
-  useEffect(()=> {
+  useEffect(() => {
+    const onTitle = (payload: string) =>
+      setTitle((prev) => (prev === "Loading..." ? payload : prev + payload));
 
-    const onTitle = (payload: string) => setTitle(_title => {
-      return _title === "Loading..." ? payload : _title+payload;
-    });
-    const onExplanation = (payload: string) => setExplanation(_explanation => {
-      return _explanation === "Loading..." ? payload : _explanation+payload;
-    });
+    const onExplanation = (payload: string) =>
+      setExplanation((prev) => (prev === "Loading..." ? payload : prev + payload));
 
-    addWebSocketListener("apodTitle", onTitle);
-    addWebSocketListener("apodExplanation", onExplanation);
+    const registerListeners = () => {
+      addWebSocketListener("apodTitle", onTitle);
+      addWebSocketListener("apodExplanation", onExplanation);
+    };
+
+    registerListeners();
+    addReconnectListener(registerListeners);
 
     return () => {
       removeWebSocketListener("apodTitle", onTitle);
       removeWebSocketListener("apodExplanation", onExplanation);
+      removeReconnectListener(registerListeners);
     };
   }, []);
 

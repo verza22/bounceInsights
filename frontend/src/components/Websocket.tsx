@@ -1,37 +1,23 @@
 import React, { useEffect } from 'react';
-import { connectWebSocket } from '../utils/websocket';
+import { connectWebSocket, addOpenListener, closeWebSocket } from '../utils/websocket';
 import { useAppStore } from '../store/useAppStore';
 
 const WebSocket: React.FC = () => {
+  const { clientId } = useAppStore();
 
-    const { clientId } = useAppStore();
+  useEffect(() => {
+    connectWebSocket();
 
-    useEffect(() => {
-        const webSocket = connectWebSocket();
+    const handleOpen = () => {
+      const ws = connectWebSocket();
+      ws.send(clientId);
+      console.log("Sent clientId on open:", clientId);
+    };
 
-        webSocket.onopen = () => {
-            webSocket.send(clientId);
-            console.log('WebSocket connected');
-        };
+    addOpenListener(handleOpen);
+  }, []);
 
-        // webSocket.onmessage = (event) => {
-        //     console.log('Mensaje recibido del servidor:', event.data);
-        // };
-
-        webSocket.onerror = (error) => {
-            console.error('WebSocket error:', error);
-        };
-
-        webSocket.onclose = () => {
-            console.log('WebSocket disconnected');
-        };
-
-        return () => {
-        webSocket.close();
-        };
-    }, []);
-
-    return null;
+  return null;
 };
 
 export default WebSocket;
