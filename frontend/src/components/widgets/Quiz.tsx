@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useState, useEffect, useCallback, useImperativeHandle } from "react";
 import i18n from "i18next";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
@@ -19,14 +19,14 @@ interface QuizItem {
   isTrue: boolean;
 }
 
-const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref) => {
-  const [date, setDate] = React.useState("");
-  const [quizItems, setQuizItems] = React.useState<QuizItem[]>([]);
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+const Quiz = forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref) => {
+  const [date, setDate] = useState("");
+  const [quizItems, setQuizItems] = useState<QuizItem[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const { dateFrom } = useDateStore();
   const { clientId } = useAppStore();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getQuizData(dateFrom);
   }, [dateFrom]);
 
@@ -39,7 +39,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
     return shuffled;
   };
 
-  const getQuizData = React.useCallback((dateFrom: string) => {
+  const getQuizData = useCallback((dateFrom: string) => {
     setLoading(true);
 
     const currentLang = i18n.language;
@@ -76,7 +76,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
       });
   }, []);
 
-  React.useImperativeHandle(ref, () => ({
+  useImperativeHandle(ref, () => ({
     getQuizData,
   }));
 

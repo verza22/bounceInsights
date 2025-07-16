@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useEffect, useState, useCallback, useImperativeHandle } from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useTranslation } from "react-i18next";
@@ -22,18 +22,18 @@ export interface CuriosityRef {
   getCuriosityData: (dateFrom: string) => void
 }
 
-const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading, setError}, ref) => {
+const Curiosity = forwardRef<CuriosityRef, CuriosityProps>(({setLoading, setError}, ref) => {
 
-  const [photos, setPhotos] = React.useState<MarsPhoto[]>([]);
-  const [index, setIndex] = React.useState(0);
+  const [photos, setPhotos] = useState<MarsPhoto[]>([]);
+  const [index, setIndex] = useState(0);
   const { dateFrom } = useDateStore();
   const { t } = useTranslation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getCuriosityData(dateFrom);
   }, [dateFrom]);
 
-  const getCuriosityData = React.useCallback((dateFrom: string)=>{
+  const getCuriosityData = useCallback((dateFrom: string)=>{
     setLoading(true);
     axios.get("nasa/curiosity",{
       params: {
@@ -56,7 +56,7 @@ const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading, s
     });
   }, []);
 
-  React.useImperativeHandle(ref, ()=> ({
+  useImperativeHandle(ref, ()=> ({
     getCuriosityData
   }));
 

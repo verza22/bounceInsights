@@ -18,10 +18,11 @@ import { getLanguagues } from "./../utils/utils";
 const nasaLogo = new URL('./../assets/nasa.png', import.meta.url).href;
 
 interface HeaderProps {
-    addWidgetToLayout: (widget: Widget) => void
+    addWidgetToLayout: (widget: Widget) => void,
+    changeLayout: (widgets: Widget[]) => void
 }
 
-const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
+const Header: React.FC<HeaderProps> = ({ addWidgetToLayout, changeLayout }) => {
 
     const { editMode, updateEditMode } = useAppStore();
     const { widgets, addWidget } = useWidgetStore();
@@ -63,10 +64,6 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
         updateEditMode(!editMode);
     };
 
-    const getTitle = (type:WidgetType) => {
-        return t(type);
-    };
-
     const dlgClick = () => {
         setIsVisible(true);
         if (lineObj.current) {
@@ -78,7 +75,6 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
 
                 const newWidget: Widget = {
                     id: maxId + 1,
-                    title: getTitle(type),
                     type: type,
                     sizeX: 2,
                     sizeY: 2,
@@ -115,12 +111,43 @@ const Header: React.FC<HeaderProps> = ({addWidgetToLayout}) => {
             id = id.replace("lan_", "");
             updateLang(id);
         }else{
+            let widgets: Widget[] = [];
             switch(e.item.id){
                 case "lay_sm":
+                    widgets = [
+                        { id: 0, type: "apod", sizeX: 1, sizeY: 1, row: 1, col: 0 },
+                        { id: 1, type: "quiz", sizeX: 1, sizeY: 1, row: 1, col: 1 },
+                        { id: 2, type: "neo", sizeX: 1, sizeY: 1, row: 0, col: 2 },
+                        { id: 3, type: "cme", sizeX: 1, sizeY: 1, row: 0, col: 0 },
+                        { id: 4, type: "gst", sizeX: 1, sizeY: 1, row: 0, col: 3 },
+                        { id: 5, type: "insight", sizeX: 1, sizeY: 1, row: 0, col: 1 },
+                        { id: 6, type: "curiosity", sizeX: 2, sizeY: 1, row: 1, col: 2 }
+                    ];
+                    changeLayout(widgets);
                 break;
                 case "lay_md":
+                    widgets = [
+                        { id: 0, type: "apod", sizeX: 2, sizeY: 2, row: 0, col: 0 },
+                        { id: 1, type: "quiz", sizeX: 2, sizeY: 2, row: 0, col: 2 },
+                        { id: 2, type: "neo", sizeX: 2, sizeY: 1, row: 2, col: 0 },
+                        { id: 3, type: "cme", sizeX: 2, sizeY: 1, row: 3, col: 0 },
+                        { id: 4, type: "gst", sizeX: 2, sizeY: 1, row: 2, col: 2 },
+                        { id: 5, type: "insight", sizeX: 2, sizeY: 1, row: 3, col: 2 },
+                        { id: 6, type: "curiosity", sizeX: 4, sizeY: 2, row: 4, col: 0 }
+                    ];
+                    changeLayout(widgets);
                 break;
                 case "lay_lg":
+                    widgets = [
+                        { id: 0, type: "apod", sizeX: 2, sizeY: 2, row: 0, col: 0 },
+                        { id: 1, type: "quiz", sizeX: 2, sizeY: 2, row: 0, col: 2 },
+                        { id: 2, type: "neo", sizeX: 2, sizeY: 2, row: 2, col: 0 },
+                        { id: 3, type: "cme", sizeX: 2, sizeY: 2, row: 2, col: 2 },
+                        { id: 4, type: "gst", sizeX: 2, sizeY: 2, row: 4, col: 0 },
+                        { id: 5, type: "insight", sizeX: 2, sizeY: 2, row: 4, col: 2 },
+                        { id: 6, type: "curiosity", sizeX: 2, sizeY: 2, row: 6, col: 0 }
+                    ];
+                    changeLayout(widgets);
                 break;
             }
         }

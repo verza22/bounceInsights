@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 
 import Header from "./components/Header";
 import Dashboard, { DashboardRef } from "./components/Dashboard";
@@ -15,13 +15,17 @@ const App: React.FC = () => {
         dashboardRef.current?.addWidgetToLayout(widget);
     }
 
-    React.useEffect(() => {
+    const changeLayout = (widgets: Widget[]) => {
+        dashboardRef.current?.changeLayout(widgets);
+    }
+
+    useEffect(() => {
       initializeLang();
     }, []);
    
     return <>
         <div id='edit_target' className="control-section">
-            <Header addWidgetToLayout={addWidgetToLayout} />
+            <Header addWidgetToLayout={addWidgetToLayout} changeLayout={changeLayout} />
             <Dashboard ref={dashboardRef} />
         </div>
         

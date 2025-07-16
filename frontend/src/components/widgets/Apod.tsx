@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useState, useEffect, useImperativeHandle, useCallback } from "react";
 import i18n from "i18next";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
@@ -15,16 +15,16 @@ export interface ApodRef {
   getApodData: (dateFrom: string) => void
 }
 
-const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) => {
+const Apod = forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) => {
 
-  const [image, setImage] = React.useState('');
-  const [title, setTitle] = React.useState('');
-  const [date, setDate] = React.useState('');
-  const [explanation, setExplanation] = React.useState('');
+  const [image, setImage] = useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
+  const [explanation, setExplanation] = useState('');
   const { dateFrom } = useDateStore();
   const { clientId } = useAppStore();
 
-  React.useEffect(()=> {
+  useEffect(()=> {
 
     const onTitle = (payload: string) => setTitle(_title => {
       return _title === "Loading..." ? payload : _title+payload;
@@ -42,11 +42,11 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) 
     };
   }, []);
 
-  React.useEffect(()=>{
+  useEffect(()=>{
     getApodData(dateFrom);
   }, [dateFrom]);
 
-  const getApodData = React.useCallback((dateFrom: string)=>{
+  const getApodData = useCallback((dateFrom: string)=>{
     setLoading(true);
     setTitle('Loading...');
     setExplanation('Loading...');
@@ -74,7 +74,7 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) 
     });
   }, []);
 
-  React.useImperativeHandle(ref, () => ({
+  useImperativeHandle(ref, () => ({
     getApodData
   }));
 

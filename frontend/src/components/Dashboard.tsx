@@ -1,5 +1,4 @@
-import React from "react";
-import { useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import React, { useRef, useEffect, forwardRef, useImperativeHandle, useCallback, createRef } from "react";
 
 import { DashboardLayoutComponent } from "@syncfusion/ej2-react-layouts";
 
@@ -17,9 +16,11 @@ import Gst from "./widgets/Gst";
 import InSight from "./widgets/InSight";
 import Curiosity, { CuriosityRef } from "./widgets/Curiosity";
 import Quiz, { QuizRef } from "./widgets/Quiz";
+import i18n from "../i18n";
 
 export interface DashboardRef {
-    addWidgetToLayout: (widget: Widget) => void;
+    addWidgetToLayout: (widget: Widget) => void,
+    changeLayout: (widgetsAux: Widget[]) => void
 }
 
 const Dashboard = forwardRef<DashboardRef>((_, ref) => {
@@ -35,6 +36,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     const dashboardObj = useRef<DashboardLayoutComponent>(null);
 
     const cellSpacing: [number, number] = [10, 10];
+    const isFirstRun = useRef(true);
 
     useEffect(()=> {
         //add widgets first load
@@ -43,11 +45,39 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         });
     }, []);
 
+    useEffect(() => {
+        //refresh all widget when change lang
+        if (isFirstRun.current) {
+          isFirstRun.current = false;
+          return;
+        }
+
+        widgets.map((widget: Widget) =>{
+            refreshWidget(widget.id);
+        });
+      }, [i18n.language]);
+
     useImperativeHandle(ref, () => ({
-        addWidgetToLayout
+        addWidgetToLayout,
+        changeLayout
     }));
 
-    const addWidgetToLayout = React.useCallback((widget: Widget) => {
+    const changeLayout = useCallback((widgetsAux: Widget[]) => {
+        //remove old widgets
+        widgets.map((widget: Widget) =>{
+            deleteWidget(widget.id);
+        });
+
+        //add to store
+        updateWidgets(widgetsAux);
+
+        //add to layout
+        widgetsAux.map((widget: Widget) =>{
+            addWidgetToLayout(widget);
+        });
+    }, []);
+
+    const addWidgetToLayout = useCallback((widget: Widget) => {
         const panel = {
             id: '_layout' + widget.id,
             sizeX: widget.sizeX,
@@ -63,7 +93,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
     const widgetTemplate = (id: number, type: WidgetType) => {
 
         if (!widgetRefMap.current[id]) {
-            widgetRefMap.current[id] = React.createRef<WidgetRef>();
+            widgetRefMap.current[id] = createRef<WidgetRef>();
         }        
     
         let content: (props: { setLoading: (val: boolean) => void, setError: (msg: string) => void }) => React.ReactNode;
@@ -72,7 +102,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
             default:
             case "apod":
                 if (!apodRefMap.current[id]) {
-                    apodRefMap.current[id] = React.createRef<ApodRef>();
+                    apodRefMap.current[id] = createRef<ApodRef>();
                 }
                 content = ({ setLoading, setError }) => (
                     <Apod setLoading={setLoading} setError={setError} ref={apodRefMap.current[id]} />
@@ -100,7 +130,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
             break;
             case "curiosity":
                 if (!curiosityRefMap.current[id]) {
-                    curiosityRefMap.current[id] = React.createRef<CuriosityRef>();
+                    curiosityRefMap.current[id] = createRef<CuriosityRef>();
                 }
                 content = ({ setLoading, setError }) => (
                     <Curiosity setLoading={setLoading} setError={setError} ref={curiosityRefMap.current[id]} />
@@ -108,7 +138,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
             break;
             case "quiz":
                 if (!quizRefMap.current[id]) {
-                    quizRefMap.current[id] = React.createRef<QuizRef>();
+                    quizRefMap.current[id] = createRef<QuizRef>();
                 }
                 content = ({ setLoading, setError }) => (
                     <Quiz setLoading={setLoading} setError={setError} ref={quizRefMap.current[id]} />
@@ -123,7 +153,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         >{content}</Widget>;
     };
 
-    const deleteWidget = React.useCallback((id: number) => {
+    const deleteWidget = useCallback((id: number) => {
         removeWidget(id);//remove from store
         widgetRefMap.current[id]?.current?.unmountWidget();//unmount widget
         dashboardObj.current?.removePanel('_layout' + id);//remove from layout
@@ -133,7 +163,7 @@ const Dashboard = forwardRef<DashboardRef>((_, ref) => {
         widgetRefMap.current[id]?.current?.refresh();
     };
 
-    const changeDateFrom = React.useCallback((dateFrom: string) => {
+    const changeDateFrom = useCallback((dateFrom: string) => {
         for (const ref of Object.values(apodRefMap.current)) {
             if (ref?.current) {
                 ref.current?.getApodData(dateFrom);

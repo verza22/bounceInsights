@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "./../../utils/axios";
 import { useTranslation } from "react-i18next";
 const Highcharts = require("highcharts");
@@ -13,7 +13,7 @@ const Insight: React.FC<InsightProps> = ({id, setLoading, setError}) => {
 
   const { t } = useTranslation();
   
-  React.useEffect(() => {
+  useEffect(() => {
 
     setLoading(true);
     axios.get("nasa/insight")

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ const Cme: React.FC<CmeProps> = ({id, setLoading, setError}) => {
   const { dateFrom, dateTo } = useDateStore();
   const { t } = useTranslation();
 
-  React.useEffect(() => {
+  useEffect(() => {
 
     setLoading(true);
     axios.get("nasa/cme",{
