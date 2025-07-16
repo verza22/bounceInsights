@@ -37,7 +37,9 @@ const Apod = forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) => {
     };
 
     registerListeners();
-    addReconnectListener(registerListeners);
+    setTimeout(()=>{
+      addReconnectListener(registerListeners);
+    },500);
 
     return () => {
       removeWebSocketListener("apodTitle", onTitle);
