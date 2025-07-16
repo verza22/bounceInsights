@@ -61,6 +61,8 @@
     color: white!important;
     background-color: #2563eb!important;
     outline: none;
+    display: flex;
+    margin: 0 4px;
   }
   
   .btn-base:hover {
@@ -70,4 +72,33 @@
   .btn-outline:hover {
     background-color: rgba(59, 130, 246, 0.1);
     color: #1e40af;
+  }
+
+  .dialog-text{
+    display: flex;
+    cursor: pointer;
+  }
+
+  .e-menu-wrapper ul .e-menu-item, .e-menu-container ul .e-menu-item{
+    height: 30px!important;
+    line-height: 30px!important;
+    padding: 0 4px!important;
+  }
+
+  .e-menu-wrapper ul .e-menu-item .e-caret, .e-menu-wrapper ul .e-menu-item .e-menu-icon{
+    position: initial!important;
+    line-height: 30px!important;
+    color: white!important;
+    margin-right: 2px!important;
+    margin-left: 2px!important;
+    margin-bottom: 0px!important;
+  }
+
+  .e-menu-wrapper .e-menu .e-menu-item.e-selected{
+    background-color: rgba(59, 130, 246, 0.1)!important;
+    color: white!important;
+  }
+
+  .e-menu-wrapper .e-ul .e-menu-item.e-selected .e-caret, .e-menu-popup ul .e-menu-item .e-icons{
+    color: #1e40af!important;
   }

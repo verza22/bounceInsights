@@ -4,8 +4,10 @@ import * as React from "react";
 import { registerLicense } from '@syncfusion/ej2-base';
 import App from './App';
 import './i18n';
+import { setupSyncfusionLocales } from './utils/syncfusion-locale';
 
 registerLicense('Ngo9BigBOggjHTQxAR8/V1JEaF5cXmtCdkxxWmFZfVtgdVdMYltbR3RPMyBoS35Rc0VkWXdecHZdR2JVU0N/VEFd');
+setupSyncfusionLocales();
 
 const container = document.getElementById('root')!;
 

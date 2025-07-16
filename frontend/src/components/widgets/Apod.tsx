@@ -4,6 +4,7 @@ import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useAppStore } from "../../store/useAppStore";
 import { addWebSocketListener, removeWebSocketListener } from "../../utils/websocket";
+import { formatLocalizedDate } from "../../utils/utils";
 
 interface ApodProps {
   setLoading: (val: boolean) => void,
@@ -82,7 +83,7 @@ const Apod = React.forwardRef<ApodRef, ApodProps>(({setLoading, setError}, ref) 
   }else{
     return (
       <div className="px-4 py-6 text-center m-auto">
-        <div className="text-center mb-2">{date}</div>
+        <div className="text-center mb-2">{formatLocalizedDate(date)}</div>
         <div className="w-full h-64 rounded-lg shadow-md mb-6 apod-img" style={{backgroundImage: "url('"+image+"')"}}></div>
         <h2 className="text-2xl font-semibold text-gray-800 mb-2">{title}</h2>
         <p className="leading-relaxed text-justify">

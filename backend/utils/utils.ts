@@ -54,5 +54,13 @@ export const validateLanguage = (lang: string) => {
       return "ENG";
     case "de":
       return "DEU"
+    case "fr":
+      return "FRA"
+    case "it":
+      return "ITA"
+    case "nl":
+      return "NLD"
+    case "ru":
+      return "RUS"
   }
 }

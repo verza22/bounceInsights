@@ -7,7 +7,8 @@ import { formatDate, strFormatDate } from '../utils/utils';
 
 const DateRangeSelector: React.FC = () => {
     const { dateFrom, dateTo, updateDateFrom, updateDateTo } = useDateStore();
-    const { t } = useTranslation();
+    const { i18n, t } = useTranslation();
+    const lang = i18n.language.split('-')[0]
 
     const handleDateChange = (e: RangeEventArgs) => {
         if (e.startDate && e.endDate) {
@@ -21,6 +22,7 @@ const DateRangeSelector: React.FC = () => {
         change={handleDateChange}
         startDate={strFormatDate(dateFrom)}
         endDate={strFormatDate(dateTo)}
+        locale={lang}
     />
 };
 

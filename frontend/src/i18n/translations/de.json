@@ -28,9 +28,40 @@
     "asteroidsTitle": "Anzahl erdnaher Asteroiden pro Tag",
     "asteroidsCount": "Anzahl der Asteroiden",
     "asteroidsLabel": "Asteroiden",
+    "options": "Optionen",
+    "language": "Sprache",
+    "layout": "Layout",
+    "small": "Klein",
+    "medium": "Mittel",
+    "large": "Groß",
+    "removeWidget": "Widget entfernen",
+    "refresh": "Aktualisieren",
+    "cmeRegions": {
+      "North": "Norden",
+      "South": "Süden",
+      "Unknown": "Unbekannt"
+    },
     "en": "Englisch",
     "es": "Spanisch",
     "de": "Deutsch",
+    "fr": "Französisch",
+    "it": "Italienisch",
+    "nl": "Niederländisch",
+    "ru": "Russisch",
+    "daterangepicker": {
+      "placeholder": "Datumsbereich auswählen",
+      "startLabel": "Von",
+      "endLabel": "Bis",
+      "applyText": "Übernehmen",
+      "cancelText": "Abbrechen",
+      "selectedDays": "Ausgewählte Tage",
+      "days": "Tag(e)",
+      "customRange": "Benutzerdefiniert",
+      "today": "Heute"
+    },
+    "dialog": {
+      "close": "Schließen"
+    },
     "error": {
       "400": "Ein oder mehrere erforderliche Felder fehlen im Anfragekörper",
       "400-001": "Daten konnten nicht korrekt formatiert werden",

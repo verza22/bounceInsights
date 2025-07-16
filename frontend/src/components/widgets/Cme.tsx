@@ -43,6 +43,10 @@ const Cme: React.FC<CmeProps> = ({id, setLoading, setError}) => {
   }, [dateFrom, dateTo]);
 
   const loadChart = (pieData: { name: string; y: number }[]) => {
+    const localizedData = pieData.map(item => ({
+      name: t(`cmeRegions.${item.name}`),
+      y: item.y
+    }));
     Highcharts.chart('container-cme-'+id, {
       chart: {
         type: 'pie'
@@ -75,7 +79,7 @@ const Cme: React.FC<CmeProps> = ({id, setLoading, setError}) => {
       series: [{
         name: t('cmeEvents'),
         colorByPoint: true,
-        data: pieData
+        data: localizedData
       }]
     });
   };

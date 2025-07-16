@@ -3,6 +3,7 @@ import i18n from "i18next";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useAppStore } from "../../store/useAppStore";
+import { formatLocalizedDate } from "../../utils/utils";
 
 interface QuizProps {
   setLoading: (val: boolean) => void,
@@ -89,7 +90,7 @@ const Quiz = React.forwardRef<QuizRef, QuizProps>(({ setLoading, setError }, ref
 
   return (
     <div className="px-4 py-6 text-center m-auto">
-      <div className="text-center mb-2">{date}</div>
+      <div className="text-center mb-2">{formatLocalizedDate(date)}</div>
       <div className="space-y-4">
         {quizItems.map((item, index) => {
           const isSelected = selectedIndex === index;

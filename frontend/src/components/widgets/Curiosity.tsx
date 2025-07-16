@@ -2,6 +2,7 @@ import React from "react";
 import axios from "./../../utils/axios";
 import { useDateStore } from "../../store/useDateStore";
 import { useTranslation } from "react-i18next";
+import { formatLocalizedDate } from "../../utils/utils";
 
 interface MarsPhoto {
   id: number;
@@ -94,7 +95,7 @@ const Curiosity = React.forwardRef<CuriosityRef, CuriosityProps>(({setLoading, s
       </div>
       <p className="text-sm text-gray-600">
         <strong>{t('camera')}:</strong> {currentPhoto.camera.full_name} <br />
-        <strong>{t('dateEarth')}:</strong> {currentPhoto.earth_date} <br />
+        <strong>{t('dateEarth')}:</strong> {formatLocalizedDate(currentPhoto.earth_date)} <br />
         <strong>{t('image')} {index + 1} {t('of')} {photos.length}</strong>
       </p>
     </div>

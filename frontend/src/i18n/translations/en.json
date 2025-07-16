@@ -28,9 +28,40 @@
     "asteroidsTitle": "Number of Near-Earth Asteroids per Day",
     "asteroidsCount": "Number of Asteroids",
     "asteroidsLabel": "Asteroids",
+    "options": "Options",
+    "language": "Language",
+    "layout": "Layout",
+    "small": "Small",
+    "medium": "Medium",
+    "large": "Large",
+    "removeWidget": "Remove widget",
+    "refresh": "Refresh",
+    "cmeRegions": {
+        "North": "North",
+        "South": "South",
+        "Unknown": "Unknown"
+    },
     "en": "English",
     "es": "Spanish",
     "de": "German",
+    "fr": "French",
+    "it": "Italian",
+    "nl": "Dutch",
+    "ru": "Russian",
+    "daterangepicker": {
+        "placeholder": "Select a range",
+        "startLabel": "Start",
+        "endLabel": "End",
+        "applyText": "Apply",
+        "cancelText": "Cancel",
+        "selectedDays": "Selected days",
+        "days": "Day(s)",
+        "customRange": "Custom Range",
+        "today": "Today"
+    },
+    "dialog": {
+        "close": "Close"
+    },
     "error": {
         "400": "One or more required fields are missing from the request body",
         "400-001": "Failed to properly format data",

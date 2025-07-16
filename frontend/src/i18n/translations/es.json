@@ -28,9 +28,40 @@
     "asteroidsTitle": "Número de asteroides cercanos a la Tierra por día",
     "asteroidsCount": "Cantidad de asteroides",
     "asteroidsLabel": "Asteroides",
+    "options": "Opciones",
+    "language": "Idioma",
+    "layout": "Diseño",
+    "small": "Pequeño",
+    "medium": "Mediano",
+    "large": "Grande",
+    "removeWidget": "Eliminar widget",
+    "refresh": "Actualizar",
+    "cmeRegions": {
+      "North": "Norte",
+      "South": "Sur",
+      "Unknown": "Desconocido"
+    },
     "en": "Inglés",
     "es": "Español",
     "de": "Alemán",
+    "fr": "Francés",
+    "it": "Italiano",
+    "nl": "Holandés",
+    "ru": "Ruso",
+    "daterangepicker": {
+      "placeholder": "Selecciona un rango de fechas",
+      "startLabel": "Desde",
+      "endLabel": "Hasta",
+      "applyText": "Aplicar",
+      "cancelText": "Cancelar",
+      "selectedDays": "Días seleccionados",
+      "days": "Día(s)",
+      "customRange": "Rango personalizado",
+      "today": "Hoy"
+    },
+    "dialog": {
+      "close": "Cerrar"
+    },
     "error": {
       "400": "Faltan uno o más campos obligatorios en el cuerpo de la solicitud",
       "400-001": "No se pudo dar el formato correcto a los datos",

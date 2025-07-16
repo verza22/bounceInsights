@@ -67,7 +67,7 @@ const Widget = forwardRef<WidgetRef, WidgetProps>(
             <div className="edit-mode-widget">
               <div
                 className="cursor-pointer m-auto"
-                title="Remove widget"
+                title={t('removeWidget')}
                 onClick={() => removeWidget(id)}
               >
                 <Icon path={mdiTrashCan} size={1.5} />
