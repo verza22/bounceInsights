@@ -8,10 +8,10 @@ You can explore the app here:
 🔗 https://nasa.luiszurita.es
 
 ---
+<details>
+<summary>🧩 Technologies Used</summary>
 
-## 🧩 Technologies Used
-
-Frontend:
+**Frontend**
 - React
 - WebSocket
 - Syncfusion
@@ -23,7 +23,7 @@ Frontend:
 - Parcel
 - TypeScript
 
-Backend:
+**Backend**
 - Axios
 - dotenv
 - Express
@@ -33,45 +33,59 @@ Backend:
 - Nodemon
 - TypeScript
 
+</details>
+
 ---
 
-## ⚙️ Installation
+<details>
+<summary>⚙️ Installation</summary>
 
 There are two modes to run the app: **development** and **production**.  
 **Development mode is recommended** as it’s simpler to set up.
 
 ### Clone the repository:
 
-git clone https://github.com/your-user/nasa-dashboard.git
+```bash
+git clone https://github.com/verza22/bounceInsights
+```
 
 ---
 
 ### Run Backend (Dev Mode):
 
-cd backend  
-npm install  
-npm run dev  
+> ⚠️ You must create a `.env` file in the `backend` directory.  
+> You can copy it from `.env.example` and fill in your NASA and OpenAI API keys.
+
+```bash
+cd backend
+npm install
+npm run dev
 # This will start the API on http://localhost:3001
+```
 
 ---
 
 ### Run Frontend (Dev Mode):
 
-cd frontend  
-npm install  
-npm run dev  
+```bash
+cd frontend
+npm install
+npm run dev
 # This will start the app on http://localhost:1234
+```
 
 ---
 
 ### Run in Production:
 
-Use:  
+```bash
 npm run build
+```
 
 ⚠️ Additional configuration is needed for NGINX.  
 If you plan to deploy in production, please open a GitHub issue or contact me.
 
+</details>
 ---
 
 ## 🚀 How to Use
