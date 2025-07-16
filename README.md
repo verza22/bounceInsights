@@ -86,7 +86,6 @@ npm run build
 If you plan to deploy in production, please open a GitHub issue or contact me.
 
 </details>
----
 
 ## 🚀 How to Use
 
