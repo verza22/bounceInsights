@@ -16,7 +16,7 @@ router.get("/cme", async (req: Request, res: Response) => {
       res.status(400).json({ error: 'error.400' });
     }
   
-    const url = `https://api.nasa.gov/DONKI/CME?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
+    const url = `DONKI/CME?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
     const fallback = "./responses/cme.json";
   
     try {

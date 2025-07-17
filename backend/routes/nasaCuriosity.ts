@@ -15,7 +15,7 @@ router.get("/curiosity", async (req: Request, res: Response) => {
       res.status(400).json({ error: 'error.400' });
     }
   
-    const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?earth_date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
+    const url = `mars-photos/api/v1/rovers/curiosity/photos?earth_date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
     const fallback = "./responses/curiosity.json";
   
     try {

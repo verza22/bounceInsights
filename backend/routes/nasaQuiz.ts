@@ -23,7 +23,7 @@ router.get("/quiz", async (req: Request, res: Response) => {
   if(lang === "")
     res.status(500).json({ error: 'error.500-001' });
 
-  const url = `https://api.nasa.gov/planetary/apod?date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
+  const url = `planetary/apod?date=${dateFrom}&api_key=${process.env.NASA_API_TOKEN}`;
   const fallback = "./responses/apod.json";
 
   try {

@@ -1,18 +1,19 @@
 import axios from "axios";
 import fs from "fs/promises";
+import { API_NASA_URL } from "./../config";
 
 export const fetchWithFallback = async (
   url: string,
   fallbackPath: string
 ): Promise<any> => {
-  try {
-    const response = await axios.get(url);
+  // try {
+    const response = await axios.get(API_NASA_URL+url);
     return response.data;
-  } catch (error) {
-    console.error(`Error fetching from API (${url}):`, error);
-    console.warn(`Using fallback file: ${fallbackPath}`);
-    return await readJSONFile(fallbackPath);
-  }
+  // } catch (error) {
+  //   console.error(`Error fetching from API (${url}):`, error);
+  //   console.warn(`Using fallback file: ${fallbackPath}`);
+  //   return await readJSONFile(fallbackPath);
+  // }
 };
 
 export const groupByRegion = (data: any[]) => {

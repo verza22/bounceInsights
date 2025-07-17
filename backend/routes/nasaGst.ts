@@ -16,7 +16,7 @@ router.get("/gst", async (req: Request, res: Response) => {
       res.status(400).json({ error: 'error.400' });
     }
   
-    const url = `https://api.nasa.gov/DONKI/GST?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
+    const url = `DONKI/GST?startDate=${dateFrom}&endDate=${dateTo}&api_key=${process.env.NASA_API_TOKEN}`;
     const fallback = "./responses/gst.json";
   
     try {

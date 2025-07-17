@@ -30,7 +30,7 @@ router.get("/neo", async (req: Request, res: Response) => {
         adjustedEnd = start.clone().add(7, 'days');
     }
 
-    const url = `https://api.nasa.gov/neo/rest/v1/feed?start_date=${start.format("YYYY-MM-DD")}&end_date=${adjustedEnd.format("YYYY-MM-DD")}&api_key=${process.env.NASA_API_TOKEN}`;
+    const url = `neo/rest/v1/feed?start_date=${start.format("YYYY-MM-DD")}&end_date=${adjustedEnd.format("YYYY-MM-DD")}&api_key=${process.env.NASA_API_TOKEN}`;
     const fallback = "./responses/neo.json";
 
     try {

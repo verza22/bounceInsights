@@ -95,6 +95,8 @@ When you open the app, you'll see 7 default widgets in the language of your brow
 - To adjust widget size/layout: go to Options → Layout and choose Small, Medium, or Large.
 - Use the date range selector at the top to filter data.
 - Press "Edit" to resize, move, add, or delete widgets.
+- To move a widget, you must be in edit mode. Click and hold the left mouse button, then drag the widget sideways.
+- To resize a widget, you must be in edit mode. Hover near the bottom-right corner until the cursor changes to a resizing arrow. Then, click and hold the left mouse button to adjust the size.
 - Press "Refresh" on a widget to reload its data.
 - All data is stored in the localStorage, so when the browser page is refreshed (F5), the data remains the same.
 
